@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ImageRepository;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -16,12 +19,15 @@ class Image
     #[ORM\Column(type: 'string', length: 50)]
     private $photo;
 
+    #[ORM\ManyToOne(targetEntity: Bien::class, inversedBy: 'images')]
+    private $idBien;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getPhoto(): ?string
+    public function getPhoto(): string
     {
         return $this->photo;
     }
@@ -29,6 +35,18 @@ class Image
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getIdBien(): ?Bien
+    {
+        return $this->idBien;
+    }
+
+    public function setIdBien(?Bien $idBien): self
+    {
+        $this->idBien = $idBien;
 
         return $this;
     }

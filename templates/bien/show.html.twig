@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bien
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid p-1">
+		<div class="row justify-content-md-center">
+			<div class="col-lg-7 col-md-12 p-5">
+				{% if not bien.images is empty %}
+					{# recperer les images #}
+					{% set images = bien.images %}
+
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						<div
+							class="carousel-inner">
+							{% for image in images %}
+								{% if image == bien.images|first %}
+									{% set active = "active" %}
+								{% else %}
+									{% set active = "" %}
+								{% endif %}
+								<div class="carousel-item {{active}} ">
+									<img class="d-block w-100" src="{{ asset('/img/upload/' ~ image.photo)}}" alt="{{bien.titre}}">
+								</div>
+							{% endfor %}
+
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+				{% endif %}
+			</div>
+			<div class="col-lg-5 col-md-12 pt-2">
+                <h2>Prendre rendez-vous pour visite le bien:</h2>
+				<p> {{ include('appointement/_form.html.twig') }}</p>
+			</div>
+		</div>
+        <hr>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12 col-lg-7 ps-5">
+                <div class="">
+                    <h2 class="text-primary">{{ bien.titre }}</h2>
+                    <p >{{ bien.description }}</p>
+                </div>
+			</div>
+            <div class="col-lg-5 col-md-12">
+                <p><strong class="text-primary">{{ bien.transactionType }}</strong></p>
+                <p><strong>Type: </strong>{{ bien.type }}</p>
+                <p><strong>Surface: </strong>{{ bien.surface }}</p>
+				<p><strong>Nombre de piéces: </strong>{{ bien.nbPiece }}</p>
+                 <p><strong>Etage: </strong>{{ bien.etage }}</p>
+                <p class="text-primary"><strong>Localisation: </strong>{{ bien.localisation }}</p>
+                <p><strong>Prix: </strong>{{ bien.prix }} €</p>
+                <p><strong>Date de construction: </strong>{{ bien.dateConstruction ? bien.dateConstruction|date('Y-m-d') : '' }}</p>
+                <p><strong>Liste des options:</strong></p>
+                {% if not bien.OptionBiens is empty %}
+                    {% set optionsBien =  bien.OptionBiens %}
+                    <ul class="d-inline-flex ">
+                    {% for optionBien in optionsBien %}
+                        {% set option = optionBien.getIdOption() %}
+                                <li class="list-inline-item">{{option.designation}}</li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p class="">Le bien n'a pas des options</p>
+                {% endif %}
+               
+            </div>
+        </div>
+	</div>
+
+	<a href="{{ path('index') }}">Accueil</a>
+
+	<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+
+	{{ include('bien/_delete_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+{% endblock %}

@@ -16,10 +16,7 @@ class Appointement
     #[ORM\Column(type: 'datetime')]
     private $date;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $titre;
-
-    #[ORM\Column(type: 'string', length: 100)]
+       #[ORM\Column(type: 'string', length: 100)]
     private $email;
 
     #[ORM\Column(type: 'string', length: 14)]
@@ -31,6 +28,11 @@ class Appointement
     #[ORM\Column(type: 'string', length: 20)]
     private $prenom;
 
+    #[ORM\ManyToOne(targetEntity: Bien::class, inversedBy: 'appointements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $titre;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -48,18 +50,7 @@ class Appointement
         return $this;
     }
 
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
-
-    public function setTitre(string $titre): self
-    {
-        $this->titre = $titre;
-
-        return $this;
-    }
-
+       
     public function getEmail(): ?string
     {
         return $this->email;
@@ -107,4 +98,18 @@ class Appointement
 
         return $this;
     }
+
+    public function getTitre(): ?Bien
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(?Bien $titre): self
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+   
 }

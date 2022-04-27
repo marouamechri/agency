@@ -1,0 +1,7 @@
+        #bien_options {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px;
+            padding-left: 20px;
+            justify-content: space-between;
+        }

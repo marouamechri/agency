@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointement index{% endblock %}
+
+{% block body %}
+    <h1>Appointement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Email</th>
+                <th>Tel</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for appointement in appointements %}
+            <tr>
+                <td>{{ appointement.id }}</td>
+                <td>{{ appointement.date ? appointement.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ appointement.email }}</td>
+                <td>{{ appointement.tel }}</td>
+                <td>{{ appointement.nom }}</td>
+                <td>{{ appointement.prenom }}</td>
+                <td>
+                    <a href="{{ path('app_appointement_show', {'id': appointement.id}) }}">show</a>
+                    <a href="{{ path('app_appointement_edit', {'id': appointement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appointement_new') }}">Create new</a>
+{% endblock %}

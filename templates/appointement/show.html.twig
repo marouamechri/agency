@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointement{% endblock %}
+
+{% block body %}
+    <h1>Appointement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ appointement.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ appointement.date ? appointement.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ appointement.email }}</td>
+            </tr>
+            <tr>
+                <th>Tel</th>
+                <td>{{ appointement.tel }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ appointement.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ appointement.prenom }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_appointement_index') }}">back to list</a>
+
+    <a href="{{ path('app_appointement_edit', {'id': appointement.id}) }}">edit</a>
+
+    {{ include('appointement/_delete_form.html.twig') }}
+{% endblock %}

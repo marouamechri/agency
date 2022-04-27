@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    {# Verifier si la route est "app_bien_edit" on affiche les image #}
+    {% if app.request.attributes.get('_route')=='app_bien_edit' %}
+        <h2>Liste des options</h2>
+
+        <h2>Images</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for image in bien.images  %}
+            <div class="col">
+                <div class="card h-100">
+                <img src="{{ asset('/img/upload/' ~ image.photo)}}" alt="image" width="100px" height="300px" class="card-img-top">
+                    <div class="card-body">
+                        <a href="{{path('annonces_delete_image', {'id':image.id})}}"
+                            data-delete data-token="{{csrf_token('delete' ~ image.id)}}">
+                            Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

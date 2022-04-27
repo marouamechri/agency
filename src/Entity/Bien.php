@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\BienRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BienRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\Cascade;
 
 #[ORM\Entity(repositoryClass: BienRepository::class)]
 class Bien
@@ -48,10 +49,18 @@ class Bien
     #[ORM\OneToMany(mappedBy: 'idbien', targetEntity: OptionBien::class)]
     private $optionBiens;
 
+    #[ORM\OneToMany(mappedBy: 'idBien', targetEntity: Image::class, orphanRemoval:true, cascade:['persist'])]
+    private $images;
+
+    #[ORM\OneToMany(mappedBy: 'titre', targetEntity: Appointement::class, orphanRemoval: true)]
+    private $appointements;
+
+    
     public function __construct()
     {
         $this->optionBiens = new ArrayCollection();
-    }
+        $this->images = new ArrayCollection();
+        $this->appointements = new ArrayCollection();    }
 
     public function getId(): ?int
     {
@@ -207,4 +216,67 @@ class Bien
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setIdBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getIdBien() === $this) {
+                $image->setIdBien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Appointement>
+     */
+    public function getAppointements(): Collection
+    {
+        return $this->appointements;
+    }
+
+    public function addAppointement(Appointement $appointement): self
+    {
+        if (!$this->appointements->contains($appointement)) {
+            $this->appointements[] = $appointement;
+            $appointement->setTitre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointement(Appointement $appointement): self
+    {
+        if ($this->appointements->removeElement($appointement)) {
+            // set the owning side to null (unless already changed)
+            if ($appointement->getTitre() === $this) {
+                $appointement->setTitre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+
 }

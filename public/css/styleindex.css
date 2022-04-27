@@ -1,0 +1,28 @@
+.sidenav {
+    height: auto;
+    width: 350px;
+    position: fixed;
+    top: 90px;
+    right: 10px;
+    background-color: rgb(208, 201, 201);
+    padding: 20px;
+}
+
+.main {
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    overflow: hidden;
+    margin-right: 350px;
+    margin-top: 50px;
+}
+
+.separation {
+    border-bottom: 2px solid rgb(104, 102, 102);
+}
+
+.container-cart {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

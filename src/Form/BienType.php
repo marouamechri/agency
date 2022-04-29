@@ -60,14 +60,13 @@ class BienType extends AbstractType
             ] )
             //ajouter liste de options
             ->add('options', EntityType::class, [
-                'attr' => array('checked'   => 'checked'),
+                //'attr' => array('checked'   => 'checked'),
                 'class'=> Option::class,
                 'choice_label'=>'designation',
                 'expanded'=>true,
                 'multiple'=>true,
                 'mapped'=>false
             ]);
-            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

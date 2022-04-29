@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\SearchData;
 use App\Entity\Bien;
 use App\Entity\Image;
 use App\Entity\Option;
@@ -9,6 +10,7 @@ use App\Form\BienType;
 use App\Entity\OptionBien;
 use App\Entity\Appointement;
 use App\Form\AppointementType;
+use App\Form\SearchFormType as SearchFormType;
 use App\Repository\BienRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +23,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BienController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(BienRepository $bienRepository): Response
+    public function index(Request $request, BienRepository $bienRepository): Response
     {
+        //pagination
+        $limit = 4;
+        //on recupere le num de la page
+        $page = (int)$request->query->get("page",1);
+        //on recupere les bien de la page
+        $annonces = $bienRepository->getPaginationAnnonces($page, $limit);
+        // on recupere le nombre total du bien
+        $total = $bienRepository->getTotalBien();
+        //recuperer le trie du href
+        (string)$trie = $request->query->get("trie");
+        if($trie){
+            $annonces = $bienRepository->getlisttrie((string)$trie);
+            $total = count($annonces);
+        }
         return $this->render('bien/index.html.twig', [
-            'biens' => $bienRepository->findAll(),
+            'biens' =>$annonces,
+            'total' => $total,
+            'limit'=>$limit,
+            'page'=>$page,
+            'trie' => $trie
         ]);
     }
 
@@ -81,7 +101,7 @@ class BienController extends AbstractController
     #[Route('/{id}', name: 'app_bien_show', methods: ['GET','POST'])]
     public function show(Bien $bien, ManagerRegistry $manager, Request $request): Response
     {
-
+        
         $appointement = new Appointement();
         $form = $this->createForm(AppointementType::class, $appointement);
         $form->handleRequest($request);
@@ -99,16 +119,17 @@ class BienController extends AbstractController
 
         return $this->renderForm('bien/show.html.twig', [
             'bien' => $bien,
-            'form'=> $form
+            'form'=> $form,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_bien_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Bien $bien, Option $option, ManagerRegistry $manager): Response
+    public function edit(Request $request, Bien $bien, ManagerRegistry $manager): Response
     {
         $form = $this->createForm(BienType::class, $bien);
         $form->handleRequest($request);
-
+        //recuperer les option existante
+        $optionexisted= $bien->getOptionBiens()->getValues();
         if ($form->isSubmitted() && $form->isValid()) {
              //on recupère les image transmises
              $images = $form->get('photo')->getData();
@@ -133,19 +154,18 @@ class BienController extends AbstractController
 
                 //on recuper le checkbox valided
                 $checked = $form->get('options')->getData();
-                //recuperer les option existante
-                $optionexisted= $bien->getOptionBiens()->getValues();
                 //si notre l'option est existe on le passe a true automatiquement 
                 //si on le decoche on suprime l'option de table bien
                 
                 foreach($checked as $option){
+
                     $same=false;
+
                     foreach($optionexisted as $optionEx){
 
                         if(($option==true)&&
                         ($optionEx->getIdOption()->getId() == $option->getId()) ){
-                           
-                                
+                             
                                 $same =true;
                         }
                          
@@ -165,6 +185,7 @@ class BienController extends AbstractController
         return $this->renderForm('bien/edit.html.twig', [
             'bien' => $bien,
             'form' => $form,
+            'optionchcked' =>$optionexisted
         ]);
     }
 
@@ -201,5 +222,39 @@ class BienController extends AbstractController
         }else{
             return new JsonResponse(['error' => 'Token invalide'], 400);
         }
+    }
+
+    #[Route('bien/search',name:'search', methods: ['GET', 'POST'])]
+    public function search(Request $request, BienRepository $repository): Response
+    {
+        //recupére la page
+        $page =(int) $request->query->get("page",1);
+        //pagination
+        $limit = 3;
+        //on recupere les bien de la page
+        $annonces = $repository->getPaginationAnnonces($page, $limit);
+        // on recupere le nombre total du bien
+        $total = $repository->getTotalBien();
+
+        $data = new SearchData();
+        $form = $this->createForm(SearchFormType::class);
+        $form->handleRequest($request);
+        //traiter le bien trie ou pas
+        $biens = $repository->findAll();
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$biens = $repository->findSearch($data);
+            $biens = $repository->filtre($data); 
+        }
+    
+        //recuperer tous mes produit filtree
+        return $this->renderForm('bien/search.html.twig', [
+            'formfiltre' => $form,
+            'annonces'=>$annonces,
+            'limit'=>$limit,
+            'total'=>$total,
+            'biens' => $biens,
+            'page'=>$page
+        ]);
     }
 }

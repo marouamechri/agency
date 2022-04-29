@@ -1,7 +1,27 @@
         #bien_options {
             display: flex;
             flex-wrap: wrap;
-            margin: 10px;
             padding-left: 20px;
             justify-content: space-between;
+        }
+        
+        #menu {
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+        
+        .grid {
+            display: grid;
+            grid-gap: 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        
+        .formfilter {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
         }

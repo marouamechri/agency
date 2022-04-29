@@ -1,72 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bien index{% endblock %}
+{% block title %}Bien index
+{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/styleindex.css') }}" type="text/css"/>
+	<link rel="stylesheet" href="{{ asset('css/styleindex.css') }}" type="text/css"/>
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <div row>
-            <!-- Page content -->
-            <div class="main col-lg-8 col-md-12">
-                <h1>Bievenue sue le site de notre agence</h1>
-                <p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
-                <a href="{{ path('app_bien_new') }}" class="btn btn-primary m-2" >ajouter un offre</a>
-
-                <div class="container-cart">
-
-                {% for bien in biens %}
-
-                    <div class="card shadow-sm p-3 mb-5 bg-body rounded" style="width: 19rem;">
-                        {% if not bien.images is empty %}
-                        {% set firstphoto = bien.images|first %}
-                            <img src="{{ asset('/img/upload/' ~ firstphoto.photo)}}" alt="{{bien.titre}}">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ bien.titre }}</h5>
-                            <p class="card-text">{{ bien.prix }}€</p>
-                            <p class="card-text">{{ bien.surface }} m² {{ bien.nbPiece }} piéces</p>
-                            <p class="card-text">{{ bien.localisation }}</p>
-                            <a href="{{ path('app_bien_show', {'id': bien.id}) }}" class="btn btn-primary">Voir l'offre</a>
-                            <a href="{{ path('app_bien_edit', {'id': bien.id}) }}" class="btn btn-primary">Modifier l'offre</a>
-                        </div>
-                    </div>
-                
-                {% else %}
-                        <p>il y'a pas des annonces </p>
-                {% endfor %}
+	<div
+		class="row">
+		<!-- Page content -->
+		<div class="col main col-lg-10 col-md-12">
+        <div class="ps-4 mb-5">
+			<h1>Bienvenue sue le site de notre agence</h1>
+			<p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
+			<a href="{{ path('app_bien_new') }}" class="btn btn-primary mt-3">ajouter un offre</a>
+        </div>
+            <div class="container">
+                <div id="grid" class="grid">
+                    {% for bien in biens %}
+                        {% include 'bien/_card.html.twig' with {bien:bien} only %}
+                    {% else %}
+                        <p>il y'a pas des annonces</p>
+                    {% endfor %}
                 </div>
-
             </div>
-            {# creation de aside pour notre page index #}
-            <div class="sidenav col-lg-4 col-md-12">
-                <h5>Notre Agence:</h5>
-                <div class="card shadow-sm p-3 bg-body rounded">
-                    <img src="{{ asset('/img/upload/agence.jpg')}}" alt="image_abence" width="100px" height="200px" class="card-img-top">
-                    <div class="p-2">
-                        <p>Vous pouvez nous retrouver tous le jours de <strong>9h à 17h</strong></p>
-                    </div><r>
-                    <div class="p-2">
-                        <p><strong>Adresse:</strong> 1 rue de paris Noisy le grand (93160)</p>
-                    </div><hr>
-                    <div class="p-2">
-                        <p><strong>Email:</strong>marwa.mechri@gmail.com</p>
-                    </div><hr>
-                    <div class="p-2">
-                        <p><strong>Téléphone:</strong>+33 7 12 45 96 35 </p>
-                    </div>
-                    <div>
+			{# pagination #}
+			<nav aria-label="Page-navigation">
+				<ul class="pagination justify-content-end pagination-sm">
+					{% for item in 1..((total/limit)|round(0, 'ceil')) %}
+						{% if (page == item) %}
+							{% set disabled = 'disabled' %}
+							{% set tabindex = 'tabindex="-1"' %}
+						{% else %}
+							{% set disabled = '' %}
+							{% set tabindex = '' %}
+						{% endif %}
+						<li class="page-item {{disabled}}">
+							<a class="page-link" {{tabindex}} href="?page={{item}}">{{item}}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</nav>
+		</div>
+		{# creation de aside pour notre page index #}
+		<div class="col-lg-2 col-md-12">
+			<div id="aside" class="col card shadow-sm bg-body fluide">
+				<h5>Notre Agence:</h5>
+				<img src="{{ asset('/img/upload/agence.jpg')}}" alt="image_abence" width="100px" height="200px" class="card-img-top">
+				<div class="card-body p-2">
+					<div>
+						<p>Vous pouvez nous retrouver tous le jours de
+							<strong>9h à 17h</strong>
+						</p>
+					</div><hr>
+					<div>
+						<p>
+							<strong>Adresse:</strong>
+							1 rue de paris Noisy le grand (93160)</p>
+					</div><hr>
+					<div>
+						<p>
+							<strong>Email:</strong>marwa.mechri@gmail.com</p>
+					</div><hr>
+					<div>
+						<p>
+							<strong>Téléphone:</strong>+33 7 12 45 96 35
+						</p>
+					</div>
+					<div>
                         <ul class="list-group">
                             <li class="list-group-item disabled">Faciliter votre recherch!</li>
-                            <li class="list-group-item list-group-item-action">Dapibus ac facilisis in</li>
-                            <li class="list-group-item list-group-item-action">Appartement</li>
-                            <li class="list-group-item list-group-item-action">Maison</li>
-                            <li class="list-group-item list-group-item-action">Achat</li>
-                            <li class="list-group-item list-group-item-action">Location</li>
+                            <li  class="list-group-item list-group-item-action"><a href='?trie=Appartement' >Appartement</a></li>
+                            <li  class="list-group-item list-group-item-action"><a href="?trie=Maison">Maison</a></li>
+                            <li  class="list-group-item list-group-item-action"><a href='?trie=Vente'>Vente</a></li>
+                            <li  class="list-group-item list-group-item-action"><a href="?trie=Location">Location</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-    <row>
+		</div>
+	</div>
 {% endblock %}

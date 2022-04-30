@@ -1,0 +1,43 @@
+<h1>Bien</h1>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Titre</th>
+			<th scope="col">Surface</th>
+			<th scope="col">Piece</th>
+			<th scope="col">prix</th>
+			<th scope="col">Localisation</th>
+			<th scope="col">Type</th>
+			<th scope="col">TypeTransaction</th>
+			<th scope="col">etage</th>
+			<th scope="col">Date de construction</th>
+			<th scope="col">Options</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for bien in biens %}
+
+			<td scope="row">{{ bien.titre }}</td>
+			<td>{{ bien.surface }}</td>
+			<td>{{ bien.nbPiece }}</td>
+			<td>{{ bien.prix }}</td>
+			<td>{{ bien.localisation }}</td>
+			<td>{{ bien.type }}</td>
+			<td>{{ bien.transactionType }}</td>
+			<td>{{ bien.etage }}</td>
+			<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
+			<td>
+				<a href="{{ path('app_bien_show', {'id': bien.id}) }}">show</a>
+				<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+				<a href="{{ path('app_bien_delete', {'id': bien.id}) }}">supprimer</a>
+
+			</td>
+		</tr>
+	{% else %}
+		<tr>
+			<td colspan="3">no records found</td>
+		</tr>
+	{% endfor %}
+</table>
+

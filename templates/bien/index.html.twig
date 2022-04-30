@@ -14,7 +14,9 @@
         <div class="ps-4 mb-5">
 			<h1>Bienvenue sue le site de notre agence</h1>
 			<p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
-			<a href="{{ path('app_bien_new') }}" class="btn btn-primary mt-3">ajouter un offre</a>
+			{# {% if app.user %} #}
+			<a href="{{ path('maintenance') }}" class="btn btn-primary mt-3">ajouter un offre</a>
+			{# {% endif %} #}
         </div>
             <div class="container">
                 <div id="grid" class="grid">

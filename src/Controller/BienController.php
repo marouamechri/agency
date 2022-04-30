@@ -2,26 +2,26 @@
 
 namespace App\Controller;
 
-use App\Data\SearchData;
 use App\Entity\Bien;
 use App\Entity\Image;
-use App\Entity\Option;
 use App\Form\BienType;
+use App\Data\SearchData;
 use App\Entity\OptionBien;
 use App\Entity\Appointement;
 use App\Form\AppointementType;
-use App\Form\SearchFormType as SearchFormType;
 use App\Repository\BienRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use App\Form\SearchFormType as SearchFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/')]
 class BienController extends AbstractController
 {
+
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(Request $request, BienRepository $bienRepository): Response
     {
@@ -32,7 +32,7 @@ class BienController extends AbstractController
         //on recupere les bien de la page
         $annonces = $bienRepository->getPaginationAnnonces($page, $limit);
         // on recupere le nombre total du bien
-        $total = $bienRepository->getTotalBien();
+        $total = $bienRepository->getCountTotalBien();
         //recuperer le trie du href
         (string)$trie = $request->query->get("trie");
         if($trie){
@@ -45,6 +45,19 @@ class BienController extends AbstractController
             'limit'=>$limit,
             'page'=>$page,
             'trie' => $trie
+        ]);
+    }
+    #[Route('/bien/maintenance', name:'maintenance',methods: ['GET'] )]
+    // #[IsGranted(data:'Role_admin', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
+
+    public function maintenance(Request $request,BienRepository $bienRepository): Response
+    {
+        $maintenance = $request->query->get("maintenance");
+        $appointements = new Appointement;
+        return $this->render('bien/maintenance.html.twig', [
+            'biens' => $bienRepository->findAll(),
+            'maintenance' => $maintenance,
+            'appointements'=> $appointements
         ]);
     }
 
@@ -224,7 +237,7 @@ class BienController extends AbstractController
         }
     }
 
-    #[Route('bien/search',name:'search', methods: ['GET', 'POST'])]
+    #[Route('Bien/search',name:'search', methods: ['GET', 'POST'])]
     public function search(Request $request, BienRepository $repository): Response
     {
         //recupére la page
@@ -234,10 +247,10 @@ class BienController extends AbstractController
         //on recupere les bien de la page
         $annonces = $repository->getPaginationAnnonces($page, $limit);
         // on recupere le nombre total du bien
-        $total = $repository->getTotalBien();
+        $total = $repository->getCountTotalBien();
 
         $data = new SearchData();
-        $form = $this->createForm(SearchFormType::class);
+        $form = $this->createForm(SearchFormType::class, $data);
         $form->handleRequest($request);
         //traiter le bien trie ou pas
         $biens = $repository->findAll();

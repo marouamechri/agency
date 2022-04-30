@@ -55,6 +55,10 @@ class Bien
     #[ORM\OneToMany(mappedBy: 'titre', targetEntity: Appointement::class, orphanRemoval: true)]
     private $appointements;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'biens')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
     
     public function __construct()
     {
@@ -280,5 +284,17 @@ class Bien
     public function __toString()
     {
         return $this->titre;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

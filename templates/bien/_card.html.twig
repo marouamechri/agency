@@ -14,6 +14,8 @@
 			piéces</p>
 		<p class="card-text text-muted">{{ bien.localisation }}</p>
 		<a href="{{ path('app_bien_show', {'id': bien.id}) }}" class="btn btn-primary">Voir l'offre</a>
+		{% if app.user %}
 		<a href="{{ path('app_bien_edit', {'id': bien.id}) }}" class="btn btn-primary">Modifier l'offre</a>
+		{% endif %}
 	</div>
 </div>

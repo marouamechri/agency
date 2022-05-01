@@ -1,13 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'bien/maintenance.html.twig' %}
 
-{% block title %}Edit Bien{% endblock %}
+
 
 {% block body %}
+<main id="main">
     <h1>Modifier le bien</h1>
 
     {{ include('bien/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('index') }}">Accueil</a>
+    <a href="{{ path('maintenance') }}">Retour à la liste</a>
 
     {{ include('bien/_delete_form.html.twig') }}
+</main>
 {% endblock %}

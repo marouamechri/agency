@@ -1,0 +1,41 @@
+<main id="main">
+	<h1>Liste des utilisateurs</h1>
+	<div>
+		<a href="{{ path('app_user_new') }}" class="btn btn-primary mt-3">ajouter un user</a>
+	</div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Id</th>
+				<th scope="col">Nom</th>
+				<th scope="col">Prenom</th>
+				<th scope="col">Email</th>
+				<th scope="col">Roles</th>
+				<th scope="col">Password</th>
+				<th scope="col">IsVerified</th>
+				<th scope="col">actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td scope="row">{{ user.id }}</td>
+					<td>{{ user.nom }}</td>
+					<td>{{ user.prenom }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+					<td>{{ user.password }}</td>
+					<td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+					<td>
+						<a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="8">La liste est vide</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</main>

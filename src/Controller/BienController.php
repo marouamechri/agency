@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Bien;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Form\BienType;
 use App\Data\SearchData;
@@ -13,6 +14,8 @@ use App\Repository\BienRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\SearchFormType as SearchFormType;
+use App\Repository\AppointementRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,18 +53,24 @@ class BienController extends AbstractController
     #[Route('/bien/maintenance', name:'maintenance',methods: ['GET'] )]
     // #[IsGranted(data:'Role_admin', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
 
-    public function maintenance(Request $request,BienRepository $bienRepository): Response
+    public function maintenance(Request $request,BienRepository $bienRepository, AppointementRepository $appointementRepository, UserRepository $userRepository): Response
     {
+        
         $maintenance = $request->query->get("maintenance");
-        $appointements = new Appointement;
+        if(!$maintenance){
+            $maintenance = 'bien';
+        }
+        $appointements = $appointementRepository->findAll();
+        $users = $userRepository->findAll();
         return $this->render('bien/maintenance.html.twig', [
             'biens' => $bienRepository->findAll(),
             'maintenance' => $maintenance,
-            'appointements'=> $appointements
+            'appointements'=> $appointements,
+            'users'=>$users
         ]);
     }
 
-    #[Route('/new', name: 'app_bien_new', methods: ['GET', 'POST'])]
+    #[Route("/bien/maintenance/maintenance</d+>?'bien'}/new", name: 'app_bien_new', methods: ['GET', 'POST'])]
     public function new(Request $request,  ManagerRegistry $manager): Response
     {
         $bien = new Bien();
@@ -135,8 +144,8 @@ class BienController extends AbstractController
             'form'=> $form,
         ]);
     }
-
-    #[Route('/{id}/edit', name: 'app_bien_edit', methods: ['GET', 'POST'])]
+    // /{id}/edit
+    #[Route('bien/maintenance/bien/{id}', name: 'app_bien_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bien $bien, ManagerRegistry $manager): Response
     {
         $form = $this->createForm(BienType::class, $bien);

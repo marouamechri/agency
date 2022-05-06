@@ -5,6 +5,7 @@
 		<thead>
 			<tr>
 				<th scope="col">Id</th>
+				<th scope="col">Titre</th>
 				<th scope="col">Date</th>
 				<th scope="col">Email</th>
 				<th scope="col">Tel</th>
@@ -17,6 +18,7 @@
 			{% for appointement in appointements %}
 				<tr>
 					<td scope="row">{{ appointement.id }}</td>
+					<td>{{appointement.titre}}</td>
 					<td>{{ appointement.date ? appointement.date|date('Y-m-d H:i:s') : '' }}</td>
 					<td>{{ appointement.email }}</td>
 					<td>{{ appointement.tel }}</td>
@@ -29,7 +31,7 @@
 				</tr>
 			{% else %}
 				<tr>
-					<td colspan="7">il n'y a pas des rendez-vous</td>
+					<td colspan="8">il n'y a pas des rendez-vous</td>
 				</tr>
 			{% endfor %}
 		</tbody>

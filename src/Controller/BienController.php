@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class BienController extends AbstractController
 {
@@ -33,7 +34,13 @@ class BienController extends AbstractController
         //on recupere le num de la page
         $page = (int)$request->query->get("page",1);
         //on recupere les bien de la page
+        // if($user)
+        // {
+        // $annonces = $bienRepository->getPaginationAnnoncesUser($page, $limit,$user);
+        // }
+       
         $annonces = $bienRepository->getPaginationAnnonces($page, $limit);
+     
         // on recupere le nombre total du bien
         $total = $bienRepository->getCountTotalBien();
         //recuperer le trie du href
@@ -51,27 +58,31 @@ class BienController extends AbstractController
         ]);
     }
     #[Route('/bien/maintenance', name:'maintenance',methods: ['GET'] )]
-    // #[IsGranted(data:'Role_admin', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
-
-    public function maintenance(Request $request,BienRepository $bienRepository, AppointementRepository $appointementRepository, UserRepository $userRepository): Response
+    #[IsGranted(data:'ROLE_USER', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
+    public function maintenance(Request $request,BienRepository $bienRepository, AppointementRepository $appointementRepository, UserRepository $userRepository, UserInterface $user): Response
     {
         
         $maintenance = $request->query->get("maintenance");
         if(!$maintenance){
             $maintenance = 'bien';
         }
-        $appointements = $appointementRepository->findAll();
+        //la liste des rendez-vous par employer
+        $appointements = $appointementRepository->getAppointement($user);
+        //la liste des employers
         $users = $userRepository->findAll();
         return $this->render('bien/maintenance.html.twig', [
-            'biens' => $bienRepository->findAll(),
+            'biens' => $bienRepository->getannacesUser($user),
+            'listeBiens'=> $bienRepository->findAll(),
             'maintenance' => $maintenance,
             'appointements'=> $appointements,
             'users'=>$users
         ]);
     }
 
-    #[Route("/bien/maintenance/maintenance</d+>?'bien'}/new", name: 'app_bien_new', methods: ['GET', 'POST'])]
-    public function new(Request $request,  ManagerRegistry $manager): Response
+    #[Route("/bien/maintenance/bien/new", name: 'app_bien_new', methods: ['GET', 'POST'])]
+    #[IsGranted(data:'ROLE_USER', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
+
+    public function new(Request $request,  ManagerRegistry $manager, UserInterface $userconnect): Response
     {
         $bien = new Bien();
         $form = $this->createForm(BienType::class, $bien);
@@ -97,7 +108,6 @@ class BienController extends AbstractController
                 $bien->addImage($img);
             }
 
-            
             $entityManager = $manager->getManager();
             $entityManager->persist($bien);
             //on recuper le checkbox valided
@@ -109,6 +119,8 @@ class BienController extends AbstractController
                     $optionBien->setIdOption($option);
                     $entityManager->persist($optionBien);                    }
             }
+            //ajouter  le user de bien
+            $bien->setUser($userconnect);
             $entityManager->flush();
             $this->addFlash('success','le bien a bien été bien ajouter');
             return $this->redirectToRoute('index', [], Response::HTTP_SEE_OTHER);
@@ -120,7 +132,7 @@ class BienController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_bien_show', methods: ['GET','POST'])]
+    #[Route('/maintenence/bien/{id}/show', name: 'app_bien_show', methods: ['GET','POST'])]
     public function show(Bien $bien, ManagerRegistry $manager, Request $request): Response
     {
         
@@ -145,7 +157,7 @@ class BienController extends AbstractController
         ]);
     }
     // /{id}/edit
-    #[Route('bien/maintenance/bien/{id}', name: 'app_bien_edit', methods: ['GET', 'POST'])]
+    #[Route('bien/maintenance/bien/{id}/edit', name: 'app_bien_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Bien $bien, ManagerRegistry $manager): Response
     {
         $form = $this->createForm(BienType::class, $bien);
@@ -202,7 +214,7 @@ class BienController extends AbstractController
              $entityManager->flush();
 
             $this->addFlash('success','le bien a bien été bien modifier');
-            return $this->redirectToRoute('index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('maintenance', [], Response::HTTP_SEE_OTHER);
         }
         return $this->renderForm('bien/edit.html.twig', [
             'bien' => $bien,
@@ -211,7 +223,7 @@ class BienController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_bien_delete', methods: ['POST'])]
+    #[Route('/maintenance/bien/{id}', name: 'app_bien_delete', methods: ['POST'])]
     public function delete(Request $request, Bien $bien, BienRepository $bienRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$bien->getId(), $request->request->get('_token'))) {

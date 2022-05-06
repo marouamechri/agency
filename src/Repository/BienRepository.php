@@ -12,6 +12,7 @@ use Doctrine\ORM\OptimisticLockException;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Bien>
@@ -125,9 +126,23 @@ class BienRepository extends ServiceEntityRepository
      */
     public function getPaginationAnnonces($page, $limit)
     {
+       
         $query = $this->createQueryBuilder('a')
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit);
+        
+        return $query->getQuery()->getResult();
+    }
+
+    public function getPaginationAnnoncesUser($page, $limit, User $user)
+    {
+       
+            $query = $this->createQueryBuilder('a')
+            ->andWhere('a.user = :bienUser')
+            ->setParameter('bienUser', $user->getId())
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+        
         return $query->getQuery()->getResult();
     }
     /**
@@ -137,8 +152,8 @@ class BienRepository extends ServiceEntityRepository
     public function getannacesUser(User $user)
     {
         $query = $this->createQueryBuilder('a')
-            ->andWhere('a.user >= :bienUser')
-            ->setParameter('bienUser', $user->id);
+            ->andWhere('a.user = :bienUser')
+            ->setParameter('bienUser', $user->getId());
             return $query->getQuery()->getResult();
     
     }

@@ -37,13 +37,13 @@ class BienType extends AbstractType
                 'label'=> 'Localisation'
             ])
             ->add('type', TextType::class,[
-                'label'=> 'Type'
+                'label'=> 'Type (Appartement ou Maison)'
             ])
             ->add('etage',  NumberType::class, [
                 'label'=> 'Etage'
             ])
             ->add('transactionType', TextType::class,[
-                'label'=> 'Type de transaction'
+                'label'=> 'Type de transaction( A vendre, Alouer, Vendu, Louer) '
             ])
             ->add('description', TextType::class, [
                 'label'=> 'Description du bien'

@@ -26,3 +26,11 @@
             flex-wrap: nowrap;
         }
         /* Style the sidebar - fixed full height */
+        
+        .user {
+            color: rgb(8, 64, 10);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }

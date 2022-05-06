@@ -11,22 +11,25 @@
 		class="row">
 		<!-- Page content -->
 		<div class="col main col-lg-10 col-md-12">
-        <div class="ps-4 mb-5">
-			<h1>Bienvenue sue le site de notre agence</h1>
-			<p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
-			{# {% if app.user %} #}
-			<a href="{{ path('maintenance') }}" class="btn btn-primary mt-3">Maintenance</a>
-			{# {% endif %} #}
-        </div>
-            <div class="container">
-                <div id="grid" class="grid">
-                    {% for bien in biens %}
-                        {% include 'bien/_card.html.twig' with {bien:bien} only %}
-                    {% else %}
-                        <p>il y'a pas des annonces</p>
-                    {% endfor %}
-                </div>
-            </div>
+			<div class="ps-4 mb-5">
+				<h1>Bienvenue sue le site de notre agence</h1>
+				<p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
+			</div>
+			{% if app.user %}
+				<div class='user'>
+					<i class="fa fa-fw fa-user"></i>
+					{{app.user.nom}} {{app.user.prenom}}
+				</div>
+			{% endif %}
+			<div class="container">
+				<div id="grid" class="grid">
+					{% for bien in biens %}
+						{% include 'bien/_card.html.twig' with {bien:bien} only %}
+					{% else %}
+						<p>il y'a pas des annonces</p>
+					{% endfor %}
+				</div>
+			</div>
 			{# pagination #}
 			<nav aria-label="Page-navigation">
 				<ul class="pagination justify-content-end pagination-sm">
@@ -71,16 +74,24 @@
 						</p>
 					</div>
 					<div>
-                        <ul class="list-group">
-                            <li class="list-group-item disabled">Faciliter votre recherch!</li>
-                            <li  class="list-group-item list-group-item-action"><a href='?trie=Appartement' >Appartement</a></li>
-                            <li  class="list-group-item list-group-item-action"><a href="?trie=Maison">Maison</a></li>
-                            <li  class="list-group-item list-group-item-action"><a href='?trie=Vente'>Vente</a></li>
-                            <li  class="list-group-item list-group-item-action"><a href="?trie=Location">Location</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+						<ul class="list-group">
+							<li class="list-group-item disabled">Faciliter votre recherch!</li>
+							<li class="list-group-item list-group-item-action">
+								<a href='?trie=Appartement'>Appartement</a>
+							</li>
+							<li class="list-group-item list-group-item-action">
+								<a href="?trie=Maison">Maison</a>
+							</li>
+							<li class="list-group-item list-group-item-action">
+								<a href='?trie=Vente'>Vente</a>
+							</li>
+							<li class="list-group-item list-group-item-action">
+								<a href="?trie=Location">Location</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

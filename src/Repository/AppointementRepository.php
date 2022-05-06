@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Appointement;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Appointement>
@@ -46,7 +48,26 @@ class AppointementRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+     /**
+     * fuction retourne les rendevous par employer
+     *@return array
+     */
+    public function getAppointement(User $user):array
+    {
 
+        $query = $this->createQueryBuilder('a')
+
+            ->join('a.titre', 'b')
+
+            ->andWhere('b = :val')
+
+            ->setParameter('val', $user);
+
+            ;
+
+        return $query->getQuery()->getResult();
+
+    }
     // /**
     //  * @return Appointement[] Returns an array of Appointement objects
     //  */

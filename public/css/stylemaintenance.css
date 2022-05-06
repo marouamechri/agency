@@ -33,6 +33,14 @@
     margin-right: 10px
 }
 
+.user {
+    color: rgb(8, 64, 10);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 20;
+}
+
 
 /* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
 

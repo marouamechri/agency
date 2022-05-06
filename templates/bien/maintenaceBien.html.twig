@@ -18,30 +18,59 @@
 				<th scope="col">Options</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr>
-				{% for bien in biens %}
-
-					<td scope="row">{{ bien.titre }}</td>
-					<td>{{ bien.surface }}</td>
-					<td>{{ bien.nbPiece }}</td>
-					<td>{{ bien.prix }}</td>
-					<td>{{ bien.localisation }}</td>
-					<td>{{ bien.type }}</td>
-					<td>{{ bien.transactionType }}</td>
-					<td>{{ bien.etage }}</td>
-					<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
-					<td>
-						<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
-						<a href="{{ path('app_bien_delete', {'id': bien.id}) }}">supprimer</a>
-					</td>
-				</tr>
-
-			{% else %}
+		{% if is_granted("ROLE_ADMIN") %}
+			<tbody>
 				<tr>
-					<td colspan="10">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
+					{% for bien in listeBiens %}
+
+						<td scope="row">{{ bien.titre }}</td>
+						<td>{{ bien.surface }}</td>
+						<td>{{ bien.nbPiece }}</td>
+						<td>{{ bien.prix }}</td>
+						<td>{{ bien.localisation }}</td>
+						<td>{{ bien.type }}</td>
+						<td>{{ bien.transactionType }}</td>
+						<td>{{ bien.etage }}</td>
+						<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
+						<td>
+							<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+							{{ include('bien/_delete_form.html.twig') }}
+						</td>
+					</tr>
+
+				{% else %}
+					<tr>
+						<td colspan="10">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		{% else %}
+
+			<tbody>
+				<tr>
+					{% for bien in biens %}
+
+						<td scope="row">{{ bien.titre }}</td>
+						<td>{{ bien.surface }}</td>
+						<td>{{ bien.nbPiece }}</td>
+						<td>{{ bien.prix }}</td>
+						<td>{{ bien.localisation }}</td>
+						<td>{{ bien.type }}</td>
+						<td>{{ bien.transactionType }}</td>
+						<td>{{ bien.etage }}</td>
+						<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
+						<td>
+							<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+							{{ include('bien/_delete_form.html.twig') }}
+						</td>
+					</tr>
+
+				{% else %}
+					<tr>
+						<td colspan="10">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		{% endif %}
 	</table>
 </main>

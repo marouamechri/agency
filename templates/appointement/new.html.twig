@@ -1,10 +1,11 @@
-
-{% block title %}New Appointement{% endblock %}
+{% extends 'bien/maintenance.html.twig' %}
 
 {% block body %}
-    <h1>Create new Appointement</h1>
+	<div id='main'>
+		<h1>Create new Appointement</h1>
 
-    {{ include('appointement/_form.html.twig') }}
+		{{ include('appointement/_form.html.twig') }}
 
-    <a href="{{ path('app_appointement_index') }}">back to list</a>
+		<a href="{{ path('maintenance',{'maintenance':'RDV'}) }}">Retour à la liste</a>
+	</div>
 {% endblock %}

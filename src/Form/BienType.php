@@ -3,12 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Bien;
+use App\Entity\User;
 use App\Entity\Option;
 use App\Entity\OptionBien;
 use App\Repository\OptionRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -45,7 +47,7 @@ class BienType extends AbstractType
             ->add('transactionType', TextType::class,[
                 'label'=> 'Type de transaction( A vendre, Alouer, Vendu, Louer) '
             ])
-            ->add('description', TextType::class, [
+            ->add('description', CKEditorType::class, [
                 'label'=> 'Description du bien'
             ])
             ->add('dateConstruction', DateType::class, [
@@ -66,6 +68,13 @@ class BienType extends AbstractType
                 'expanded'=>true,
                 'multiple'=>true,
                 'mapped'=>false
+            ])
+            //si l'utilistateur est un admin il peut choisire le employer qui s'occupe du bien
+            ->add('user', EntityType::class, [
+                'class'=> User::class,
+                'multiple'=>false,
+                'choice_label'=>'nom',
+                'mapped'=>true,
             ]);
     }
 

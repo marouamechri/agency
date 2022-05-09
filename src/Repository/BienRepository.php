@@ -58,9 +58,11 @@ class BienRepository extends ServiceEntityRepository
      * function recupere le bien par type ou par type de transaction
      *@return array
      */
-    public function getlisttrie(string $search): array
+    public function getlisttrie(string $search, int $page, int $limit): array
     {
-        $query = $this->createQueryBuilder('a');
+        $query = $this->createQueryBuilder('a')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
 
         if ($search == 'Appartement') {
             $query->andWhere('a.type = :type')
@@ -80,13 +82,40 @@ class BienRepository extends ServiceEntityRepository
         }
         return $query->getQuery()->getResult();
     }
+    //retoure le nombre totale apres le trie
+    public  function getCountTotalBienTrier(string $search)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('COUNT(a)');
+        if ($search == 'Appartement') {
+            $query->andWhere('a.type = :type')
+                ->setParameter('type', $search);
+        }
+        if ($search == 'Maison') {
+            $query->andWhere('a.type = :type')
+                ->setParameter('type', $search);
+        }
+        if ($search == 'Location') {
+            $query->andWhere('a.transactionType = :type')
+                ->setParameter('type', $search);
+        }
+        if ($search == 'Vente') {
+            $query->andWhere('a.transactionType = :type')
+                ->setParameter('type', $search);
+        }
+        //getSingleScalarResult elle permet de retourner une resultat en type de base(chiffre,chaine...)
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
     /**
      * fuction filtre par prix(max,min) surface(max,min) prix(max,min)
      *@return array
      */
-    public function filtre(SearchData $search): array
+    public function getListefiltre(SearchData $search, int $page, int $limit): array
     {
-        $query = $this->createQueryBuilder('b');
+        $query = $this->createQueryBuilder('b')
+            ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
         if (!empty($search->nbpiecemax)) {
             $query
                 ->andWhere('b.nbPiece <= :maxPiece')
@@ -120,31 +149,79 @@ class BienRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    //recuperer totol de bien de filtre
+    public function getCoutListefiltre(SearchData $search): int
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('COUNT(b)');
+        if (!empty($search->nbpiecemax)) {
+            $query
+                ->andWhere('b.nbPiece <= :maxPiece')
+                ->setParameter('maxPiece', $search->nbpiecemax);
+        }
+        if (!empty($search->nbpiecemin)) {
+            $query
+                ->andWhere('b.nbPiece >= :minPiece')
+                ->setParameter('minPiece', $search->nbpiecemin);
+        }
+        if (!empty($search->surfacemax)) {
+            $query
+                ->andWhere('b.surface <= :maxSurface')
+                ->setParameter('maxSurface', $search->surfacemax);
+        }
+        if (!empty($search->surfacemin)) {
+            $query
+                ->andWhere('b.surface >= :minSurface')
+                ->setParameter('minSurface', $search->surfacemin);
+        }
+        if (!empty($search->prixmax)) {
+            $query
+                ->andWhere('b.prix <= :maxPrix')
+                ->setParameter('maxPrix', $search->prixmax);
+        }
+        if (!empty($search->prixmin)) {
+            $query
+                ->andWhere('b.prix >= :minPrix')
+                ->setParameter('minPrix', $search->prixmin);
+        }
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
+
     /**
-     * fuction retourne le annace par page
+     * fuction retourne le annance par page
      *@return void
      */
     public function getPaginationAnnonces($page, $limit)
     {
-       
+
         $query = $this->createQueryBuilder('a')
             ->setFirstResult(($page * $limit) - $limit)
             ->setMaxResults($limit);
-        
-        return $query->getQuery()->getResult();
-    }
 
-    public function getPaginationAnnoncesUser($page, $limit, User $user)
-    {
-       
-            $query = $this->createQueryBuilder('a')
-            ->andWhere('a.user = :bienUser')
-            ->setParameter('bienUser', $user->getId())
-            ->setFirstResult(($page * $limit) - $limit)
-            ->setMaxResults($limit);
-        
         return $query->getQuery()->getResult();
     }
+    //retourne le nombre toltal de bien
+    public  function getCountTotalBien()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('COUNT(a)');
+        //getSingleScalarResult elle permet de retourner une resultat en type de base(chiffre,chaine...)
+        return $query->getQuery()->getSingleScalarResult();
+    }
+    // public function getPaginationAnnoncesUser($page, $limit, User $user)
+    // {
+
+    //         $query = $this->createQueryBuilder('a')
+    //         ->andWhere('a.user = :bienUser')
+    //         ->setParameter('bienUser', $user->getId())
+    //         ->setFirstResult(($page * $limit) - $limit)
+    //         ->setMaxResults($limit);
+
+    //     return $query->getQuery()->getResult();
+    // }
     /**
      * fuction retourne les annances cree par agent immobilier
      *@return array
@@ -154,16 +231,9 @@ class BienRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('a')
             ->andWhere('a.user = :bienUser')
             ->setParameter('bienUser', $user->getId());
-            return $query->getQuery()->getResult();
-    
+        return $query->getQuery()->getResult();
     }
-    public  function getCountTotalBien()
-    {
-        $query = $this->createQueryBuilder('a')
-            ->select('COUNT(a)');
-        //getSingleScalarResult elle permet de retourner une resultat en type de base(chiffre,chaine...)
-        return $query->getQuery()->getSingleScalarResult();
-    }
+
     // /**
     //  * @return Bien[] Returns an array of Bien objects
     //  */

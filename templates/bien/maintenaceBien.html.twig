@@ -12,65 +12,42 @@
 				<th scope="col">prix</th>
 				<th scope="col">Localisation</th>
 				<th scope="col">Type</th>
-				<th scope="col">TypeTransaction</th>
+				<th scope="col">Transaction</th>
 				<th scope="col">etage</th>
-				<th scope="col">Date de construction</th>
+				<th scope="col">Date/construction</th>
 				<th scope="col">Options</th>
 			</tr>
 		</thead>
+		{# afficher les bien par role user #}
 		{% if is_granted("ROLE_ADMIN") %}
-			<tbody>
-				<tr>
-					{% for bien in listeBiens %}
-
-						<td scope="row">{{ bien.titre }}</td>
-						<td>{{ bien.surface }}</td>
-						<td>{{ bien.nbPiece }}</td>
-						<td>{{ bien.prix }}</td>
-						<td>{{ bien.localisation }}</td>
-						<td>{{ bien.type }}</td>
-						<td>{{ bien.transactionType }}</td>
-						<td>{{ bien.etage }}</td>
-						<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
-						<td>
-							<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
-							{{ include('bien/_delete_form.html.twig') }}
-						</td>
-					</tr>
-
-				{% else %}
-					<tr>
-						<td colspan="10">no records found</td>
-					</tr>
-				{% endfor %}
-			</tbody>
+			{% set listeAffiche = listeBiens %}
 		{% else %}
-
-			<tbody>
-				<tr>
-					{% for bien in biens %}
-
-						<td scope="row">{{ bien.titre }}</td>
-						<td>{{ bien.surface }}</td>
-						<td>{{ bien.nbPiece }}</td>
-						<td>{{ bien.prix }}</td>
-						<td>{{ bien.localisation }}</td>
-						<td>{{ bien.type }}</td>
-						<td>{{ bien.transactionType }}</td>
-						<td>{{ bien.etage }}</td>
-						<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
-						<td>
-							<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
-							{{ include('bien/_delete_form.html.twig') }}
-						</td>
-					</tr>
-
-				{% else %}
-					<tr>
-						<td colspan="10">no records found</td>
-					</tr>
-				{% endfor %}
-			</tbody>
+			{% set listeAffiche = biens %}
 		{% endif %}
+		<tbody>
+			<tr>
+				{% for bien in listeAffiche %}
+
+					<td scope="row">{{ bien.titre }}</td>
+					<td>{{ bien.surface }}m²</td>
+					<td>{{ bien.nbPiece }}</td>
+					<td>{{ bien.prix| number_format(0, ',' , ' ') }}€</td>
+					<td>{{ bien.localisation }}</td>
+					<td>{{ bien.type }}</td>
+					<td>{{ bien.transactionType }}</td>
+					<td>{{ bien.etage }}</td>
+					<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
+					<td>
+						<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
+						{{ include('bien/_delete_form.html.twig') }}
+					</td>
+				</tr>
+
+			{% else %}
+				<tr>
+					<td colspan="10">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 </main>

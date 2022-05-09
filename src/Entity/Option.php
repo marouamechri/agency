@@ -19,7 +19,7 @@ class Option
     #[ORM\Column(type: 'string', length: 50)]
     private $designation;
 
-    #[ORM\OneToMany(mappedBy: 'idOption', targetEntity: OptionBien::class)]
+    #[ORM\OneToMany(mappedBy: 'idOption', targetEntity: OptionBien::class, cascade:['persist'])]
     private $optionBiens;
 
     public function __construct()

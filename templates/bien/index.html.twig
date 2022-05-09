@@ -15,12 +15,6 @@
 				<h1>Bienvenue sue le site de notre agence</h1>
 				<p>retrouvez tous les bien prés de ches vousau meilleur prix</p>
 			</div>
-			{% if app.user %}
-				<div class='user'>
-					<i class="fa fa-fw fa-user"></i>
-					{{app.user.nom}} {{app.user.prenom}}
-				</div>
-			{% endif %}
 			<div class="container">
 				<div id="grid" class="grid">
 					{% for bien in biens %}
@@ -41,9 +35,17 @@
 							{% set disabled = '' %}
 							{% set tabindex = '' %}
 						{% endif %}
-						<li class="page-item {{disabled}}">
-							<a class="page-link" {{tabindex}} href="?page={{item}}">{{item}}</a>
-						</li>
+						{% if (trie) %}
+							<li class="page-item {{disabled}}">
+								<a class="page-link" {{tabindex}} href="{{ path('index', {'page':item,'trie':trie }) }}">{{item}}</a>
+							</li>
+
+						{% else %}
+
+							<li class="page-item {{disabled}}">
+								<a class="page-link" {{tabindex}} href="?page={{item}}">{{item}}</a>
+							</li>
+						{% endif %}
 					{% endfor %}
 				</ul>
 			</nav>
@@ -77,16 +79,16 @@
 						<ul class="list-group">
 							<li class="list-group-item disabled">Faciliter votre recherch!</li>
 							<li class="list-group-item list-group-item-action">
-								<a href='?trie=Appartement'>Appartement</a>
+								<a href="{{ path('index', {'page':1,'trie':'Appartement' }) }}">Appartement</a>
 							</li>
 							<li class="list-group-item list-group-item-action">
-								<a href="?trie=Maison">Maison</a>
+								<a href="{{ path('index', {'page':1,'trie':'Maison' }) }}">Maison</a>
 							</li>
 							<li class="list-group-item list-group-item-action">
-								<a href='?trie=Vente'>Vente</a>
+								<a href='{{ path('index', {'page':1,'trie':'Vente' }) }}'>Vente</a>
 							</li>
 							<li class="list-group-item list-group-item-action">
-								<a href="?trie=Location">Location</a>
+								<a href="{{ path('index', {'page':1,'trie':'Location' }) }}">Location</a>
 							</li>
 						</ul>
 					</div>

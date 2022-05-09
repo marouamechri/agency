@@ -41,6 +41,10 @@
     z-index: 20;
 }
 
+#bloc_article {
+    display: block;
+}
+
 
 /* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
 

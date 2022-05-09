@@ -14,31 +14,40 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="container">
-				<div id="grid" class="grid">
-					{% for bien in biens %}
-						{% include 'bien/_card.html.twig' with {bien:bien} only %}
-					{% else %}
-						<p>il y'a pas des annonces</p>
-					{% endfor %}
-				</div>
-			</div>
-			<nav aria-label="Page-navigation">
-				<ul class="pagination justify-content-end pagination-sm">
-					{% for item in 1..((total/limit)|round(0, 'ceil')) %}
-						{% if (page == item) %}
-							{% set disabled = 'disabled' %}
-							{% set tabindex = 'tabindex="-1"' %}
+			<div class="col-12">
+				<div class="container">
+					<div id="grid" class="grid justify-content-center">
+						{% for bien in annonces %}
+							{% include 'bien/_card.html.twig' with {bien:bien} only %}
 						{% else %}
-							{% set disabled = '' %}
-							{% set tabindex = '' %}
-						{% endif %}
-						<li class="page-item {{disabled}}">
-							<a class="page-link" {{tabindex}} href="?page={{item}}">{{item}}</a>
-						</li>
-					{% endfor %}
-				</ul>
-			</nav>
+							<p>il y'a pas des annonces</p>
+						{% endfor %}
+					</div>
+				</div>
+				<nav aria-label="Page-navigation">
+					<ul class="pagination justify-content-end pagination-sm">
+						{% for item in 1..((total/limit)|round(0, 'ceil')) %}
+							{% if (page == item) %}
+								{% set disabled = 'disabled' %}
+								{% set tabindex = 'tabindex="-1"' %}
+							{% else %}
+								{% set disabled = '' %}
+								{% set tabindex = '' %}
+							{% endif %}
+							{% if (formfiltre) %}
+								<li class="page-item {{disabled}}">
+									<a class="page-link" {{tabindex}} href="{{ path('search', {'page':item,'filter':'filter' }) }}">{{item}}</a>
+								</li>
+
+							{% else %}
+								<li class="page-item {{disabled}}">
+									<a class="page-link" {{tabindex}} href="{{ path('search', {'page':item}) }}">{{item}}</a>
+								</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</nav>
+			</div>
 		</div>
 	</div>
 {% endblock %}

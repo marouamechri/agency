@@ -46,13 +46,13 @@ class Bien
     #[ORM\Column(type: 'date')]
     private $dateConstruction;
 
-    #[ORM\OneToMany(mappedBy: 'idbien', targetEntity: OptionBien::class)]
+    #[ORM\OneToMany(mappedBy: 'idbien', targetEntity: OptionBien::class, cascade:['remove'])]
     private $optionBiens;
 
     #[ORM\OneToMany(mappedBy: 'idBien', targetEntity: Image::class, orphanRemoval:true, cascade:['persist'])]
     private $images;
 
-    #[ORM\OneToMany(mappedBy: 'titre', targetEntity: Appointement::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'titre', targetEntity: Appointement::class, orphanRemoval: true, cascade:['remove'])]
     private $appointements;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'biens')]

@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -63,13 +63,22 @@ class RegistrationController extends AbstractController
         ]);
     }
     #[Route('bien/maintenance/user/register/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository,UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user);
+             // encode the plain password
+             $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $userRepository->add($user);
+
+               
            return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
         }
 

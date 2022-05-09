@@ -15,7 +15,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for appointement in appointements %}
+		{# afficher le rendez-vous par role user #}
+		{% if is_granted("ROLE_ADMIN") %}
+			{% set listeAffiche = toutsAppointement %}
+		{% else %}
+			{% set listeAffiche = appointements %}
+		{% endif %}
+			{% for appointement in listeAffiche %}
 				<tr>
 					<td scope="row">{{ appointement.id }}</td>
 					<td>{{appointement.titre}}</td>

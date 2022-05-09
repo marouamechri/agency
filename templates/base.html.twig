@@ -16,36 +16,45 @@
 	</head>
 	<body>
 		<header>
-				<nav id='menu' class="navbar navbar-expand-lg navbar-light bg-light">
-					<div class="container-fluid">
-						<a class="navbar-brand" href="{{ path('index') }}">Agence</a>
-						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-							<span class="navbar-toggler-icon"></span>
-						</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+			<nav id='menu' class="navbar navbar-expand-lg navbar-light bg-light">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="{{ path('index') }}">Agence</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('index') }}">Accueil</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('search') }}">Nos bien</a>
+							</li>
+							{% if app.user %}
 								<li class="nav-item">
-									<a class="nav-link" href="{{ path('index') }}">Accueil</a>
+									<a class="nav-link" href="{{path('app_logout')}}">Déconnexion</a>
 								</li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ path('search') }}">Nos bien</a>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path('maintenance') }}">Maintenance</a>
 								</li>
-								{% if app.user %}
-									<li class="nav-item">
-										<a class="nav-link" href="{{path('app_logout')}}">Déconnexion</a>
-									</li>
-									<li class="nav-item">
-									<a class="nav-link"  href="{{ path('maintenance') }}">Maintenance</a>
-									</li>
-								{% else %}	
-									<li class="nav-item">
-										<a class="nav-link" href="{{path('app_login')}}">Connexion</a>
-									</li>	
-								{% endif %}
+							{% else %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{path('app_login')}}">Connexion</a>
+								</li>
+							{% endif %}
 						</ul>
+						{# si il y a une connection on affiche le non et le prenom  de l'utilisateur  #}
+						{% if app.user %}
+							<div class='me-2'>
+								<i class="fa fa-fw fa-user "></i>
+								{{app.user.nom}}
+								{{app.user.prenom}}
+							</div>
+						{% endif %}
 					</div>
 				</nav>
-			{# Affichage des alertes générées dans les controller #}
-			{# Affichage des alertes générées dans les controller #}
+				{# Affichage des alertes générées dans les controller #}
+				{# Affichage des alertes générées dans les controller #}
 				<div
 					class="my-3">
 					{# On récupère le type et les messages de chaque message flash #}
@@ -63,15 +72,13 @@
 						</div>
 					{% endfor %}
 				</div>
-        </header>
-        <main class="p-3 mt-5
-		"> 
-		
-        {% block body %}{% endblock %}
-        </main>
-        <footer></footer>
-    	<script src="{{ asset('js/images.js')}}"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    </body>
-</html>
+			</header>
+			<main class="p-3 mt-5"> {% block body %}{% endblock %}
+				</main>
+				<footer></footer>
+				<script src="{{ asset('js/images.js')}}"></script>
+				<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+			</body>
+		</body>
+	</html>

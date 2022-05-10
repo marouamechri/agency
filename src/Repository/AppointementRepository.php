@@ -49,7 +49,7 @@ class AppointementRepository extends ServiceEntityRepository
         }
     }
      /**
-     * fuction retourne les rendevous par employer
+     * fuction retourne les rendezvous par employer
      *@return array
      */
     public function getAppointement(User $user):array

@@ -15,7 +15,7 @@
 				<th scope="col">Transaction</th>
 				<th scope="col">etage</th>
 				<th scope="col">Date/construction</th>
-				<th scope="col">Options</th>
+				<th class='text-center' scope="col" colspan="3">Options</th>
 			</tr>
 		</thead>
 		{# afficher les bien par role user #}
@@ -38,8 +38,9 @@
 					<td>{{ bien.etage }}</td>
 					<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
 					<td>
-						<a href="{{ path('app_bien_edit', {'id': bien.id}) }}">edit</a>
-						{{ include('bien/_delete_form.html.twig') }}
+						<td>
+						<a href="{{ path('app_bien_edit', {'id': bien.id}) }}"><button class='btn btn-outline-success'>Modifier</button></a>
+						</td><td>{{ include('bien/_delete_form.html.twig') }}</td>
 					</td>
 				</tr>
 

@@ -35,6 +35,7 @@
 						<a class="nav-link" href="{{path('app_logout')}}">Déconnexion</a>
 
 					</div>
+					
 				</header>
 			</div>
 			<div class="g-col-8">
@@ -46,6 +47,24 @@
 							{{app.user.prenom}}
 						</div>
 					{% endif %}
+				</div>
+				<div class="row my-5">
+				{# Affichage des alertes générées dans les controller #}
+					{# Affichage des alertes générées dans les controller #}
+						{# On récupère le type et les messages de chaque message flash #}
+						{% for type, messages in app.flashes %}
+							{# On génère l'alerte #}
+							<div
+								class="alert alert-{{type}}  alert-dismissible fade show text-end" role="alert">
+								{# On parcourt les messages pour les afficher #}
+								{% for message in messages %}
+									{{message}}
+								{% endfor %}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+						{% endfor %}
 				</div>
 				<div class="row">
 					<div class="col">

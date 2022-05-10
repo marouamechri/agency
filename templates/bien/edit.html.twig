@@ -6,10 +6,9 @@
 <main id="main">
     <h1>Modifier le bien</h1>
 
-    {{ include('bien/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('bien/_form.html.twig', {'button_label': 'Modifier'}) }}
 
     <a href="{{ path('maintenance') }}">Retour à la liste</a>
 
-    {{ include('bien/_delete_form.html.twig') }}
 </main>
 {% endblock %}

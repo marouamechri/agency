@@ -16,6 +16,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "maildev": "^2.0.2"
+        "browser-sync": "^1.9.2",
+        "maildev": "^2.0.2",
+        "node-gyp": "^9.0.0"
     }
 }

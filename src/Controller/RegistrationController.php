@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
-use App\Security\EmailVerifier;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -41,7 +43,7 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-            
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -87,7 +89,28 @@ class RegistrationController extends AbstractController
             'form' => $form,
         ]);
     }
+    //supprimer un employer
+    #[Route('bien/maintenance/user/{id}/delete', name: "app_user_delete",methods: ['POST'], requirements: ['id' => "[0-9]+"])]
+    public function delete(Request $request, User $user, UserRepository $userRepository, UserInterface $admin)
+    {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            
+        
+            //on recupere tout les biens qui sont attachés au user à supprimer
+           $allBiensUser = $user->getBiens();
+           //on les parcours 
+           foreach( $allBiensUser as $unBien){
+                //on les attache avec l'admin
+                $unBien->setUser($admin);
+           }
+           
+            $userRepository->remove($user);
+        }
 
+        $this->addFlash("success", "L'utilisateur a été supprimé avec succés");
+        return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
+       
+    }
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response

@@ -3,7 +3,7 @@
 {% if  is_granted("ROLE_ADMIN") %}
 	{{ form_widget(form) }}
 {% else %}
-{# sinon on n'ffiche pas le select de user #}
+	{# sinon on n'ffiche pas le select de user #}
 	{{ form_row(form.titre)}}
 	{{ form_row(form.nbPiece)}}
 	{{ form_row(form.surface)}}
@@ -15,8 +15,8 @@
 	{{ form_row(form.description)}}
 	{{ form_row(form.dateConstruction)}}
 	{{ form_row(form.options)}}
-    {{ form_row(form.photo)}}
-    {{ form_row(form.user) == userConnecter.id}}
+	{{ form_row(form.photo)}}
+	{{ form_row(form.user) == userConnecter.id}}
 {% endif %}
 {# Verifier si la route est "app_bien_edit" on affiche les image #}
 {% if app.request.attributes.get('_route')=='app_bien_edit' %}
@@ -35,5 +35,5 @@
 		{% endfor %}
 	</div>
 {% endif %}
-<button class="btn">{{ button_label|default('Save') }}</button>
+<button class="btn btn-outline-success">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

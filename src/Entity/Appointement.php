@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\AppointementRepository;
+use App\Entity\Bien;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AppointementRepository;
 
 #[ORM\Entity(repositoryClass: AppointementRepository::class)]
 class Appointement

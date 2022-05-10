@@ -55,13 +55,13 @@ class UserController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/bein/maintenance/user/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, UserRepository $userRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user);
-        }
+//     #[Route('/bein/maintenance/user/{id}', name: 'app_user_delete', methods: ['POST'])]
+//     public function delete(Request $request, User $user, UserRepository $userRepository): Response
+//     {
+//         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+//             $userRepository->remove($user);
+//         }
 
-        return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
-    }
+//         return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
+//     }
 }

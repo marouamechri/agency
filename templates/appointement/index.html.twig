@@ -4,14 +4,13 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th scope="col">Id</th>
 				<th scope="col">Titre</th>
 				<th scope="col">Date</th>
 				<th scope="col">Email</th>
 				<th scope="col">Tel</th>
 				<th scope="col">Nom</th>
 				<th scope="col">Prenom</th>
-				<th scope="col">actions</th>
+				<th class='text-center' scope="col" colspan="3">actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -23,21 +22,23 @@
 		{% endif %}
 			{% for appointement in listeAffiche %}
 				<tr>
-					<td scope="row">{{ appointement.id }}</td>
-					<td>{{appointement.titre}}</td>
+					<td scope="row">{{appointement.titre}}</td>
 					<td>{{ appointement.date ? appointement.date|date('Y-m-d H:i:s') : '' }}</td>
 					<td>{{ appointement.email }}</td>
 					<td>{{ appointement.tel }}</td>
 					<td>{{ appointement.nom }}</td>
 					<td>{{ appointement.prenom }}</td>
 					<td>
-						<a href="{{ path('app_appointement_edit', {'id': appointement.id}) }}">edit</a>
-						{{ include('appointement/_delete_form.html.twig') }}
+						<td>
+						<a href="{{ path('app_appointement_edit', {'id': appointement.id}) }}"><button class='btn btn-outline-success'>Modifier</button></a>
+						</td>
+						<td>{{ include('appointement/_delete_form.html.twig') }}
+						</td>
 					</td>
 				</tr>
 			{% else %}
 				<tr>
-					<td colspan="8">il n'y a pas des rendez-vous</td>
+					<td colspan="7">il n'y a pas des rendez-vous</td>
 				</tr>
 			{% endfor %}
 		</tbody>

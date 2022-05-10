@@ -45,6 +45,12 @@
     display: block;
 }
 
+#btnOption {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 
 /* Add media queries for small screens (when the height of the screen is less than 450px, add a smaller padding and font-size) */
 

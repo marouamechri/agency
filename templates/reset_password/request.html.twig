@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublier
+{% endblock %}
+
+{% block body %}
+	<section class="vh-100" style="background-color: #9A616D;">
+		<div class="container py-5 h-100">
+			<div class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col col-xl-10">
+					<div class="card" style="border-radius: 1rem;">
+						<div class="row g-0">
+							<div class="col-md-6 col-lg-5 d-none d-md-block">
+								<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;"/>
+							</div>
+							<div class="col-md-6 col-lg-7 d-flex align-items-center">
+								<div class="card-body p-4 p-lg-5 text-black">
+									{% for flash_error in app.flashes('reset_password_error') %}
+										<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+									{% endfor %}
+									<h1>Réinitialisez votre mot de passe</h1>
+
+									{{ form_start(requestForm) }}
+									{{ form_row(requestForm.email) }}
+									<div>
+										<small>
+											Entrez votre adresse e-mail et nous vous enverrons un
+											                lien pour réinitialiser votre mot de passe.
+										</small>
+									</div>
+
+									<button class="btn btn-primary">Réinitialisation du mot de passe</button>
+									{{ form_end(requestForm) }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

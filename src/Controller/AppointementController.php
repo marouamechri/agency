@@ -6,6 +6,7 @@ use App\Entity\Bien;
 use App\Entity\Appointement;
 use App\Form\AppointementType;
 use App\Repository\AppointementRepository;
+use App\Repository\BienRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,20 +18,22 @@ class AppointementController extends AbstractController
 {
     
     #[Route('/bien/maintenance/appointement/new', name: 'app_appointement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AppointementRepository $appointementRepository): Response
+    public function new(Request $request, AppointementRepository $appointementRepository, BienRepository $bienRepository , UserInterface $userInterface): Response
     {
+        $bien = $bienRepository->findAll();
         $appointement = new Appointement();
         $form = $this->createForm(AppointementType::class, $appointement);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $appointementRepository->add($appointement);
-            return $this->redirectToRoute('app_appointement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('maintenance', ['maintenance'=>'RDV'], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('appointement/new.html.twig', [
             'appointement' => $appointement,
             'form' => $form,
+            'bien'=>$bien
         ]);
     }
 

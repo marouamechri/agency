@@ -49,7 +49,7 @@ class AppointementRepository extends ServiceEntityRepository
         }
     }
      /**
-     * fuction retourne les rendezvous par employer
+     * fuction retourne les rendevous par employer
      *@return array
      */
     public function getAppointement(User $user):array
@@ -59,7 +59,7 @@ class AppointementRepository extends ServiceEntityRepository
 
             ->join('a.titre', 'b')
 
-            ->andWhere('b = :val')
+            ->andWhere('b.user = :val')
 
             ->setParameter('val', $user);
 

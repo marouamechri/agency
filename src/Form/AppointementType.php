@@ -53,6 +53,7 @@ class AppointementType extends AbstractType
                     'hour' => 'Heure', 'minute' => 'Minute', 'second' => 'Second',
                 ],
             ])
+            
         ;
     }
 

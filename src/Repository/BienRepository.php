@@ -191,7 +191,7 @@ class BienRepository extends ServiceEntityRepository
 
 
     /**
-     * fuction retourne le annance par page
+     * function retourne le annance par page
      *@return void
      */
     public function getPaginationAnnonces($page, $limit)
@@ -233,6 +233,8 @@ class BienRepository extends ServiceEntityRepository
             ->setParameter('bienUser', $user->getId());
         return $query->getQuery()->getResult();
     }
+
+    
 
     // /**
     //  * @return Bien[] Returns an array of Bien objects

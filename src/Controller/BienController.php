@@ -63,8 +63,10 @@ class BienController extends AbstractController
         }
         //la liste des rendez-vous par employer
         $appointements = $appointementRepository->getAppointement($user);
+        //dd($appointements);
         //liste des bien par employer
         $biens = $bienRepository->getannacesUser($user);
+        
         //la liste des employers
         $users = $userRepository->findAll();
         return $this->render('bien/maintenance.html.twig', [

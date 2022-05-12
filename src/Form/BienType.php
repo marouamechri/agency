@@ -5,8 +5,6 @@ namespace App\Form;
 use App\Entity\Bien;
 use App\Entity\User;
 use App\Entity\Option;
-use App\Entity\OptionBien;
-use App\Repository\OptionRepository;
 use Symfony\Component\Form\AbstractType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,10 +13,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class BienType extends AbstractType
 {
+    /**
+     * formulaire d'ajout et modification de bien
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         
@@ -38,14 +44,28 @@ class BienType extends AbstractType
             ->add('localisation',TextType::class,[
                 'label'=> 'Localisation'
             ])
-            ->add('type', TextType::class,[
-                'label'=> 'Type (Appartement ou Maison)'
+            ->add('type', ChoiceType::class,[
+                'choices' => [
+                    'Appartement' => 'Appartement',
+                    'Maison' => 'Maison'
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'label'=> 'Type de bien'
             ])
             ->add('etage',  NumberType::class, [
                 'label'=> 'Etage'
             ])
-            ->add('transactionType', TextType::class,[
-                'label'=> 'Type de transaction( A vendre, Alouer, Vendu, Louer) '
+            ->add('transactionType',  ChoiceType::class,[
+                'choices' => [
+                    'A vendre' => 'A vendre',
+                    'A louer' => 'A louer',
+                    'Vendu'=>'Vendu',
+                    'Louer'=>'Louer'
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'label'=> 'Type de transaction:'
             ])
             ->add('description', CKEditorType::class, [
                 'label'=> 'Description du bien'

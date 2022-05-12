@@ -35,7 +35,10 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
+     * Afficher et traiter le formulaire pour demander une réinitialisation du mot de passe.
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @param TranslatorInterface $translator
      */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer, TranslatorInterface $translator): Response
@@ -57,7 +60,7 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Confirmation page after a user has requested a password reset.
+     * confirmation après qu'un utilisateur a demandé une réinitialisation de mot de passe.
      */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
@@ -74,7 +77,11 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
+     * Valide et traite l'URL de réinitialisation sur laquelle l'utilisateur a cliqué dans son e-mail.
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param TranslatorInterface $translator
+     * @param string $token 
      */
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator, string $token = null): Response
@@ -104,15 +111,15 @@ class ResetPasswordController extends AbstractController
             return $this->redirectToRoute('app_forgot_password_request');
         }
 
-        // The token is valid; allow the user to change their password.
+        // Si le token est valide ; permettre à l'utilisateur de changer son mot de passe..
         $form = $this->createForm(ChangePasswordFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // A password reset token should be used only once, remove it.
+            // Le token de réinitialisation de mot de passe ne doit être utilisé qu'une seule fois, supprimez-le..
             $this->resetPasswordHelper->removeResetRequest($token);
 
-            // Encode(hash) the plain password, and set it.
+            // Encode(hash) le pw et on l'ajoute dans BDD.
             $encodedPassword = $userPasswordHasher->hashPassword(
                 $user,
                 $form->get('plainPassword')->getData()
@@ -121,7 +128,7 @@ class ResetPasswordController extends AbstractController
             $user->setPassword($encodedPassword);
             $this->entityManager->flush();
 
-            // The session is cleaned up after the password has been changed.
+            // La session est nettoyée après la modification du mot de passe.
             $this->cleanSessionAfterReset();
 
             return $this->redirectToRoute('index');
@@ -138,7 +145,7 @@ class ResetPasswordController extends AbstractController
             'email' => $emailFormData,
         ]);
 
-        // Do not reveal whether a user account was found or not.
+        // si un compte d'utilisateur a été trouvé ou non.
         if (!$user) {
             return $this->redirectToRoute('app_check_email');
         }
@@ -171,7 +178,7 @@ class ResetPasswordController extends AbstractController
 
         $mailer->send($email);
 
-        // Store the token object in session for retrieval in check-email route.
+        //Stockez le token dans la session pour le récupérer dans la route de vérification des e-mails..
         $this->setTokenObjectInSession($resetToken);
 
         return $this->redirectToRoute('app_check_email');

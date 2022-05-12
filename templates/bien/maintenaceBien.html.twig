@@ -20,9 +20,20 @@
 		</thead>
 		{# afficher les bien par role user #}
 		{% if is_granted("ROLE_ADMIN") %}
-			{% set listeAffiche = listeBiens %}
+
+		{#si archive on recupere la liste bienArchive#}	
+			{% if archive =='true' %}
+				{% set listeAffiche = bienArchive %}
+				{% else %}
+					{% set listeAffiche = AllBiensDispo %}
+			{% endif %}
 		{% else %}
-			{% set listeAffiche = biens %}
+		{# On affiche les bien de employer conneceter #}
+			{% if archive == 'true' %}
+				{% set listeAffiche = bienArchiveUser %}
+				{% else %}
+					{% set listeAffiche = biensDispoUser %}
+			{% endif %}
 		{% endif %}
 		<tbody>
 			<tr>

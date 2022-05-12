@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Bien;
 use App\Entity\Appointement;
 use App\Form\AppointementType;
 use App\Form\RendezVousType;
@@ -17,8 +16,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AppointementController extends AbstractController
 {
-    
+    /**
+     * fonction permet au employer d'ajouter un rendez-vous
+     *
+     * @param Request $request
+     * @param AppointementRepository $appointementRepository
+     * @param BienRepository $bienRepository
+     * @param UserInterface $user
+     * @return Response
+     */
     #[Route('/bien/maintenance/appointement/new', name: 'app_appointement_new', methods: ['GET', 'POST'])]
+    #[IsGranted(data: 'ROLE_USER', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function new(Request $request, AppointementRepository $appointementRepository, BienRepository $bienRepository,UserInterface $user ): Response
     {
     
@@ -41,16 +49,14 @@ class AppointementController extends AbstractController
     
     }
 
-    // #[Route('/bien/maintenance/appointement/{id}/show', name: 'app_appointement_show', methods: ['GET'])]
-    // public function show(Appointement $appointement): Response
-    // {
-    //     return $this->render('appointement/show.html.twig', [
-    //         'appointement' => $appointement,
-            
-    //     ]);
-    // }
-
+    /**
+     * permet au utilisateur de modifier un rendez-vous
+     * @param Request $request
+     * @param Appointement $appointement
+     * @param AppointementRepository $appointementRepository
+     */
     #[Route('/bien/maintenance/appointement/{id}/edit', name: 'app_appointement_edit', methods: ['GET', 'POST'])]
+    #[IsGranted(data: 'ROLE_USER', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function edit(Request $request, Appointement $appointement, AppointementRepository $appointementRepository): Response
     {
         $form = $this->createForm(AppointementType::class, $appointement);
@@ -67,7 +73,14 @@ class AppointementController extends AbstractController
         ]);
     }
 
+    /**
+     * permet de supprimer un rendez-vous
+     * @param Request $request
+     * @param Appointement $appointement
+     * @param AppointementRepository $appointementRepository
+     */
     #[Route('/bien/maintenance/delete/{id}', name: 'app_appointement_delete', methods: ['POST'])]
+    #[IsGranted(data: 'ROLE_USER', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function delete(Request $request, Appointement $appointement, AppointementRepository $appointementRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$appointement->getId(), $request->request->get('_token'))) {

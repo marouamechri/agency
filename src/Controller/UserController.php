@@ -5,21 +5,17 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 class UserController extends AbstractController
 {
-    // #[Route("/bien/maintenancepage<\d+>?maintenance='appointement'", name: 'app_user_index', methods: ['GET'])]
-    // public function index(UserRepository $userRepository): Response
-    // {
-    //     return $this->render('user/index.html.twig', [
-    //         'users' => $userRepository->findAll(),
-    //     ]);
-    // }
-
+    
     #[Route('/register', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[IsGranted(data: 'ROLE_ADMIN', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function new(Request $request, UserRepository $userRepository): Response
     {
         $user = new User();
@@ -37,31 +33,4 @@ class UserController extends AbstractController
         ]);
     }
 
-
-    // #[Route('bien/maintenance/user/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    // public function edit(Request $request, User $user, UserRepository $userRepository): Response
-    // {
-    //     $form = $this->createForm(UserType::class, $user);
-    //     $form->handleRequest($request);
-
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $userRepository->add($user);
-    //         return $this->redirectToRoute('maintenance', ['mainenance'=>'user'], Response::HTTP_SEE_OTHER);
-    //     }
-
-    //     return $this->renderForm('user/edit.html.twig', [
-    //         'user' => $user,
-    //         'form' => $form,
-    //     ]);
-    // }
-
-//     #[Route('/bein/maintenance/user/{id}', name: 'app_user_delete', methods: ['POST'])]
-//     public function delete(Request $request, User $user, UserRepository $userRepository): Response
-//     {
-//         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-//             $userRepository->remove($user);
-//         }
-
-//         return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
-//     }
 }

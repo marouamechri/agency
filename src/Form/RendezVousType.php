@@ -3,12 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Bien;
-use App\Entity\User;
 use App\Entity\Appointement;
-use App\Repository\BienRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Mime\Message;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -19,10 +15,8 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class RendezVousType extends AbstractType
@@ -34,6 +28,13 @@ class RendezVousType extends AbstractType
     {
         $this->security = $security;
     }
+    /**
+     * formulaire permet de au employer d'ajouter un renvez-vous pour un de ces bien
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     
@@ -70,7 +71,7 @@ class RendezVousType extends AbstractType
                 ],
             ]);
 
-            // grab the user, do a quick sanity check that one exists
+        //recuperer l'utilistauer connceter
         $user = $this->security->getUser();
         if (!$user) {
             throw new \LogicException(
@@ -79,24 +80,9 @@ class RendezVousType extends AbstractType
         }
         
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($user) {
-            // if (null !== $event->getData()) {
-            //     // we don't need to add the friend field because
-            //     // the message will be addressed to a fixed friend
-            //     return;
-            // }
 
             $form = $event->getForm();
 
-            // $formOptions = [
-            //     'class'=> Bien::class,
-            //     'multiple'=>false,
-            //     'choice_label'=>'titre',
-            //     'query_builder' =>function(EntityRepository $er) use ($user){
-            //         return $er->getannacesUser($user);
-            //     },
-            // ];
-            // create the field, this is similar the $builder->add()
-            // field name, field type, field options
             $form->add('titre', EntityType::class,[
 
                 'class'=> Bien::class,

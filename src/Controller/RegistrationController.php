@@ -13,9 +13,9 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -29,7 +29,16 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
+    /**
+     * permet au administrateur d'enregistrer un user
+     *
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param EntityManagerInterface $entityManager
+     * 
+     */
     #[Route('bien/maintenance/user/register', name: 'app_register')]
+    #[IsGranted(data: 'ROLE_ADMIN', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -66,10 +75,17 @@ class RegistrationController extends AbstractController
         ]);
     }
     /**
-     * Modifier un etulisateur
+     * fonction permet de modifier un utolisateur enregistrer
+     * *
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param UserRepository $userRepository
+     * @param User $user
+     * 
      * 
      */
     #[Route('bien/maintenance/user/register/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[IsGranted(data: 'ROLE_ADMIN', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function edit(Request $request, User $user, UserRepository $userRepository,UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(EditeUserType::class, $user);
@@ -88,8 +104,19 @@ class RegistrationController extends AbstractController
             'form' => $form,
         ]);
     }
-    //supprimer un employer
+    
+    /**
+     * fonction permet de supprimer un utilisateur
+     * * *
+     * @param Request $request
+     * @param UserInterface $admin
+     * @param UserRepository $userRepository
+     * @param User $user
+     * 
+     * 
+     */
     #[Route('bien/maintenance/user/{id}/delete', name: "app_user_delete",methods: ['POST'], requirements: ['id' => "[0-9]+"])]
+    #[IsGranted(data: 'ROLE_ADMIN', message: "Vous n'avez pas les autorisations nécessaires", statusCode: 403)]
     public function delete(Request $request, User $user, UserRepository $userRepository, UserInterface $admin)
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
@@ -110,6 +137,15 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('maintenance', ['maintenance'=>'user'], Response::HTTP_SEE_OTHER);
        
     }
+
+    /**
+     * fonction permet de verifier le email
+     * 
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param UserRepository $userRepository
+     *
+     */
 
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response

@@ -13,17 +13,29 @@
 				{% include 'bien/_filter.html.twig' %}
 			</div>
 		</div>
+		
+		<div class='row md-2'>
+			{{ include('filter/_order.html.twig') }}
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<h5 class="text-success">Le nombre total de bien: {{total}}</h5>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-12">
 				<div class="container">
 					<div id="grid" class="grid justify-content-center">
 						{% for bien in annonces %}
+							{# Si il ya un bien on l' affiche  #}
 							{% include 'bien/_card.html.twig' with {bien:bien} only %}
 						{% else %}
+							{# si la liste des biens est vide on affiche la paragraphe suivante #}
 							<p>il y'a pas des annonces</p>
 						{% endfor %}
 					</div>
 				</div>
+				{# gerer la pagination #}
 				<nav aria-label="Page-navigation">
 					<ul class="pagination justify-content-end pagination-sm">
 						{% for item in 1..((total/limit)|round(0, 'ceil')) %}

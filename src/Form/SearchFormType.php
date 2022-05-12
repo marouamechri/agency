@@ -9,6 +9,13 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class SearchFormType extends AbstractType
 {
+    /**
+     * formulaire qui traite le filter sur la liste de bien
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

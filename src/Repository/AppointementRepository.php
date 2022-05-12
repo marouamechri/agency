@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
 use App\Entity\Appointement;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\OptimisticLockException;
@@ -52,7 +51,7 @@ class AppointementRepository extends ServiceEntityRepository
      * fuction retourne les rendevous par employer
      *@return array
      */
-    public function getAppointement(User $user):array
+    public function getAppointement(UserInterface $user):array
     {
 
         $query = $this->createQueryBuilder('a')

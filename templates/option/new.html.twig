@@ -1,11 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'bien/maintenance.html.twig' %}
 
-{% block title %}New Option{% endblock %}
+{% block title %}Nouvelle Option{% endblock %}
 
 {% block body %}
-    <h1>Create new Option</h1>
+<main id='main'>
+    <h1>Ajouter une option</h1>
 
     {{ include('option/_form.html.twig') }}
 
-    <a href="{{ path('app_option_index') }}">back to list</a>
+    <a href="{{ path('maintenance') }}">Retour à la liste </a>
+</main>
 {% endblock %}

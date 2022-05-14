@@ -52,7 +52,7 @@ class AppointementType extends AbstractType
             ])
             ->add('date', DateTimeType::class, [
                 'placeholder' => [
-                    'year' => 'Annee', 'month' => 'Mois', 'day' => 'Jour',
+                    'year' => 'Année', 'month' => 'Mois', 'day' => 'Jour',
                     'hour' => 'Heure', 'minute' => 'Minute', 'second' => 'Seconde',
                 ],
             ])

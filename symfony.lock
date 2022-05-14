@@ -101,11 +101,47 @@
             "./config/packages/fos_ckeditor.yaml"
         ]
     },
+    "illuminate/collections": {
+        "version": "v9.12.2"
+    },
+    "illuminate/conditionable": {
+        "version": "v9.12.2"
+    },
+    "illuminate/console": {
+        "version": "v9.12.2"
+    },
+    "illuminate/container": {
+        "version": "v9.12.2"
+    },
+    "illuminate/contracts": {
+        "version": "v9.12.2"
+    },
+    "illuminate/filesystem": {
+        "version": "v9.12.2"
+    },
+    "illuminate/macroable": {
+        "version": "v9.12.2"
+    },
+    "illuminate/support": {
+        "version": "v9.12.2"
+    },
+    "illuminate/translation": {
+        "version": "v9.12.2"
+    },
+    "illuminate/validation": {
+        "version": "v9.12.2"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "laravel/ui": {
+        "version": "v3.4.5"
+    },
     "monolog/monolog": {
         "version": "2.5.0"
+    },
+    "nesbot/carbon": {
+        "version": "2.58.0"
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
@@ -135,6 +171,9 @@
         "version": "2.0.1"
     },
     "psr/log": {
+        "version": "3.0.0"
+    },
+    "psr/simple-cache": {
         "version": "3.0.0"
     },
     "sensio/framework-extra-bundle": {
@@ -541,6 +580,9 @@
     },
     "twig/twig": {
         "version": "v3.3.10"
+    },
+    "voku/portable-ascii": {
+        "version": "2.0.1"
     },
     "webmozart/assert": {
         "version": "1.10.0"

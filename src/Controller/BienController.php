@@ -160,7 +160,9 @@ class BienController extends AbstractController
 
                 //on stocke le nom de l'image dans BDD
                 $img = new Image();
+                //on cree une image dans mon table image
                 $img->setPhoto($fichier);
+                //on rajoute l'image à mon bien
                 $bien->addImage($img);
             }
 
@@ -180,7 +182,7 @@ class BienController extends AbstractController
             if (!$this->isGranted('ROLE_ADMIN')) {
                 $bien->setUser($userconnect);
             }
-
+            //enregister dans ma bdd
             $entityManager->flush();
             $this->addFlash('success', 'le bien a bien été bien ajouter');
             return $this->redirectToRoute('maintenance', [], Response::HTTP_SEE_OTHER);

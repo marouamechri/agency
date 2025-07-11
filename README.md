@@ -1,6 +1,5 @@
 # Agency - Plateforme de gestion immobilière
 
-![Bannière ou logo](https://via.placeholder.com/1200x400)  
 *Une solution complète pour la gestion de rendez-vous et de biens immobiliers.*
 
 ## 📌 Description

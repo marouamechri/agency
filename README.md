@@ -33,14 +33,14 @@
    cd agency
    
 2. **Installer les dépendances Symfony** :
-   composer install
-   
+  bash
+composer install
 3. **Configurer l'environnement** :
    
-   Copier le fichier .env et l'adapter 
-      cp .env .env.local
-   
-   Modifier les variables dans .env.local :
+   - Copier le fichier .env et l'adapter 
+      bash
+cp .env .env.local
+   - Modifier les variables dans .env.local :
    DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/agency?serverVersion=8.0"
    
 5. **Créer la base de données** :

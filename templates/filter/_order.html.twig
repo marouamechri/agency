@@ -1,0 +1,31 @@
+
+    <div class='col-4'>
+        {% if orderPieces == 'DESC' %}
+            <a href="?orderPieces=ASC" class="text-decoration-none"><i class="fa-solid fa-caret-down"></i> Pièces</a>
+        {% elseif orderPieces == 'ASC' %}
+            <a href="?orderPieces=DESC" class="text-decoration-none"><i class="fa-solid fa-caret-up"></i> Pièces</a> 
+        {% else %}
+            <a href="?orderPieces=DESC" class="text-decoration-none"><i class="fa-solid fa-sort"></i> Pièces</a>
+        {% endif %}
+    </div>
+
+    <div class='col-4'>
+        {% if orderSurfaces == 'DESC' %}
+            <a href="?orderSurfaces=ASC" class="text-decoration-none"><i class="fa-solid fa-caret-down"></i> Surfaces</a>
+        {% elseif orderSurfaces == 'ASC' %}
+            <a href="?orderSurfaces=DESC" class="text-decoration-none"><i class="fa-solid fa-caret-up"></i> Surfaces</a> 
+        {% else %}
+            <a href="?orderSurfaces=DESC" class="text-decoration-none"><i class="fa-solid fa-sort"></i> Surfaces</a>
+        {% endif %}
+    </div>
+
+    <div class='col-4'>
+        {% if orderPrix == 'DESC' %}
+            <a href="?orderPrix=ASC" class="text-decoration-none"><i class="fa-solid fa-caret-down"></i> Prix</a>
+        {% elseif orderPrix  == 'ASC' %}
+            <a href="?orderPrix=DESC" class="text-decoration-none"><i class="fa-solid fa-caret-up"></i> Prix</a> 
+        {% else %}
+            <a href="?orderPrix=DESC" class="text-decoration-none"><i class="fa-solid fa-sort"></i> Prix</a>
+        {% endif %}
+    </div>
+   

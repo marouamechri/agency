@@ -1,0 +1,18 @@
+<div class="card shadow-sm mb-3 bg-body rounded" style="width: 17rem;">
+	{% if not bien.images is empty %}
+		{% set firstphoto = bien.images|first %}
+		<img src="{{ asset('/img/upload/' ~ firstphoto.photo)}}" alt="{{bien.titre}}">
+	{% endif %}
+	<div class="card-body">
+		<h5 class="card-title">{{ bien.titre }}</h5>
+		<div class="card-text text-primary" style="font-weight: bold; font-size: 1.5rem;">
+            {{ bien.prix| number_format(0, ',' , ' ') }}€
+        </div>
+		<p class="card-text">{{ bien.surface }}
+			m²
+			{{ bien.nbPiece }}
+			piéces</p>
+		<p class="card-text text-muted">{{ bien.localisation }}</p>
+		<a href="{{ path('app_bien_show', {'id': bien.id}) }}" class="btn btn-primary">Voir l'offre</a>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+
+{% extends 'bien/maintenance.html.twig' %}
+
+{% block title %}nouveau bien{% endblock %}
+
+{% block body %}
+<main id="main">
+    <h1>Ajouter un nouveau Bien</h1>
+
+    {{ include('bien/_form.html.twig') }}
+
+    <a href="{{ path('maintenance') }}">Retour à la liste</a>
+    </main>
+{% endblock %}

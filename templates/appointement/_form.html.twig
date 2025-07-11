@@ -1,0 +1,9 @@
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+{{ form_start(form) }}
+   {{ form_widget(form) }}
+   <div class="mt-2"> <button class="btn btn-outline-success">{{ button_label|default('Envoyer') }}</button></div>
+{{ form_end(form) }}

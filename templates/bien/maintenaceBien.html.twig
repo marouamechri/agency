@@ -1,0 +1,65 @@
+<main id="main">
+	<h1>Les biens</h1>
+	<div>
+		<a href="{{ path('app_bien_new')}}" class="btn btn-primary mt-3">ajouter un bien</a>
+	</div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Titre</th>
+				<th scope="col">Surface</th>
+				<th scope="col">Pièces</th>
+				<th scope="col">Prix</th>
+				<th scope="col">Localisation</th>
+				<th scope="col">Type</th>
+				<th scope="col">Transaction</th>
+				<th scope="col">Etage</th>
+				<th scope="col">Date/construction</th>
+				<th class='text-center' scope="col" colspan="3">Options</th>
+			</tr>
+		</thead>
+		{# afficher les bien par role user #}
+		{% if is_granted("ROLE_ADMIN") %}
+
+		{#si archive on recupere la liste bienArchive#}	
+			{% if archive =='true' %}
+				{% set listeAffiche = bienArchive %}
+				{% else %}
+					{% set listeAffiche = AllBiensDispo %}
+			{% endif %}
+		{% else %}
+		{# On affiche les bien de employer conneceter #}
+			{% if archive == 'true' %}
+				{% set listeAffiche = bienArchiveUser %}
+				{% else %}
+					{% set listeAffiche = biensDispoUser %}
+			{% endif %}
+		{% endif %}
+		<tbody>
+			<tr>
+				{% for bien in listeAffiche %}
+
+					<td scope="row">{{ bien.titre }}</td>
+					<td>{{ bien.surface }}m²</td>
+					<td>{{ bien.nbPiece }}</td>
+					<td>{{ bien.prix| number_format(0, ',' , ' ') }}€</td>
+					<td>{{ bien.localisation }}</td>
+					<td>{{ bien.type }}</td>
+					<td>{{ bien.transactionType }}</td>
+					<td>{{ bien.etage }}</td>
+					<td>{{ bien.dateConstruction.format('d/m/y') }}</td>
+					<td>
+						<td>
+						<a href="{{ path('app_bien_edit', {'id': bien.id}) }}"><button class='btn btn-outline-success'>Modifier</button></a>
+						</td><td>{{ include('bien/_delete_form.html.twig') }}</td>
+					</td>
+				</tr>
+
+			{% else %}
+				<tr>
+					<td colspan="10">Aucun enregistrement trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</main>

@@ -1,0 +1,42 @@
+{% block body %}
+<main id="main">
+	<h1>Liste des employes</h1>
+	<div>
+		<a href="{{ path('app_register') }}" class="btn btn-primary mt-3">ajouter un user</a>
+	</div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Nom</th>
+				<th scope="col">Prenom</th>
+				<th scope="col">Email</th>
+				<th scope="col">Roles</th>
+				<th scope="col">IsVerified</th>
+				<th class='text-center' scope="col" colspan="3">actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td scope="row">{{ user.nom }} </td>
+					<td>{{ user.prenom }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+					<td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
+					<td>
+						<td>
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}"><button class='btn btn-outline-success'>Modifier</button></a>
+                        </td>
+						<td>{{ include('user/_delete_form.html.twig') }}
+						</td>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="6">La liste est vide</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</main>
+{% endblock %}

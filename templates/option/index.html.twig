@@ -1,0 +1,36 @@
+
+{% block body %}
+<main id='main'>
+    <h1>Option index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Designation</th>
+                <th class='text-center' scope="col" colspan="3" >Options</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for option in options %}
+            <tr>
+                <td>{{ option.designation }}</td>
+                <td>
+                <td>
+                    <a href="{{ path('app_option_edit', {'id': option.id}) }}"> <button class="btn btn-outline-success">Modifier</button></a>
+                    </td>
+                    <td>
+                    {{ include('option/_delete_form.html.twig') }}
+                    </td>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">la liste des options est vide</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_option_new') }}">Créer un nouveau option</a>
+    </main>
+{% endblock %}

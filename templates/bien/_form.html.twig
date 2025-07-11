@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+{# si l'utlilisateur est un admin on affiche tout la formulaire #}
+{% if  is_granted("ROLE_ADMIN") %}
+	{{ form_widget(form) }}
+{% else %}
+	{# sinon on n'ffiche pas le select de user #}
+	{{ form_row(form.titre)}}
+	{{ form_row(form.nbPiece)}}
+	{{ form_row(form.surface)}}
+	{{ form_row(form.prix)}}
+	{{ form_row(form.localisation)}}
+	{{ form_row(form.type)}}
+	{{ form_row(form.etage)}}
+	{{ form_row(form.transactionType)}}
+	{{ form_row(form.description)}}
+	{{ form_row(form.dateConstruction)}}
+	{{ form_row(form.options)}}
+	{{ form_row(form.photo)}}
+	{{ form_row(form.user) == userConnecter.id}}
+{% endif %}
+{# Verifier si la route est "app_bien_edit" on affiche les image #}
+{% if app.request.attributes.get('_route')=='app_bien_edit' %}
+	<h2>Images:</h2>
+	<div class="row row-cols-1 row-cols-md-2 g-4">
+		{% for image in bien.images  %}
+			<div class="col">
+				<div class="card h-100">
+					<img src="{{ asset('/img/upload/' ~ image.photo)}}" alt="image" width="100px" height="300px" class="card-img-top">
+					<div class="card-body">
+						<a href="{{path('annonces_delete_image', {'id':image.id})}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}">
+							Supprimer</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endif %}
+<button class="btn btn-outline-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

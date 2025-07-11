@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bien
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid p-1">
+		<div class="row justify-content-md-center">
+			<div class="col-lg-7 col-md-12 p-5">
+				{% if not bien.images is empty %}
+					{# recuperer les images #}
+					{% set images = bien.images %}
+					{# afficher les imgae dans une carouselle bootstrap #}
+					<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  						<div class="carousel-inner">
+							{% for image in images %}
+								{% if image == bien.images|first %}
+									{% set active = "active" %}
+								{% else %}
+									{% set active = "" %}
+								{% endif %}
+								<div class="carousel-item {{active}} ">
+									<img class="d-block w-100" src="{{ asset('/img/upload/' ~ image.photo)}}" alt="{{bien.titre}}">
+								</div>
+							{% endfor %}
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only">Previous</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Next</span>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+			{# forme permet d'envoyer une demande de rendez-vous #}
+			<div class="col-lg-5 col-md-12 pt-5">
+				<br>
+                <h3>Planifier une visite du bien:</h3>
+				<p> {{ include('appointement/_form.html.twig') }}</p>
+			</div>
+		</div>
+        <hr>
+		{# div affiche les detailles consernant ce bien  #}
+        <div class="row justify-content-md-center">
+            <div class="col-md-12 col-lg-7 ps-5">
+                <div class="">
+                    <h2 class="text-primary">{{ bien.titre }}</h2>
+                    <p >{{ bien.description }}</p>
+                </div>
+			</div>
+            <div class="col-lg-5 col-md-12">
+                <p><strong class="text-primary">{{ bien.transactionType }}</strong></p>
+                <p><strong>Type: </strong>{{ bien.type }}</p>
+                <p><strong>Surface: </strong>{{ bien.surface }}</p>
+				<p><strong>Nombre de piéces: </strong>{{ bien.nbPiece }}</p>
+                 <p><strong>Etage: </strong>{{ bien.etage }}</p>
+                <p class="text-primary"><strong>Localisation: </strong>{{ bien.localisation }}</p>
+                <p><strong>Prix: </strong>{{ bien.prix|number_format(0, ',' , ' ') }}€</p>
+                <p><strong>Date de construction: </strong>{{ bien.dateConstruction ? bien.dateConstruction|date('Y-m-d') : '' }}</p>
+                <p><strong>Liste des options:</strong></p>
+                {% if not bien.OptionBiens is empty %}
+                    {% set optionsBien =  bien.OptionBiens %}
+                    <ul class="d-inline-flex ">
+                    {% for optionBien in optionsBien %}
+                        {% set option = optionBien.getIdOption() %}
+                                <li class="list-inline-item">{{option.designation}}</li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p class="">Le bien n'a pas des options</p>
+                {% endif %}
+               
+            </div>
+        </div>
+	</div>
+	<a href="{{ path('index') }}">Retour à la liste</a>
+{% endblock %}

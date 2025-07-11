@@ -1,0 +1,36 @@
+        #bien_options {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 20px;
+            justify-content: space-between;
+        }
+        
+        #menu {
+            position: fixed;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+        }
+        
+        .grid {
+            display: grid;
+            grid-gap: 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        
+        .formfilter {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+        /* Style the sidebar - fixed full height */
+        
+        .user {
+            color: rgb(8, 64, 10);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 100;
+        }

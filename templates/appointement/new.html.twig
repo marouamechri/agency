@@ -1,0 +1,11 @@
+{% extends 'bien/maintenance.html.twig' %}
+
+{% block body %}
+	<div id='main'>
+		<h1>Ajouter un rendez-vous</h1>
+
+		{{ include('appointement/_form.html.twig') }}
+
+		<a href="{{ path('maintenance',{'maintenance':'RDV'}) }}">Retour à la liste</a>
+	</div>
+{% endblock %}

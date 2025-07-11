@@ -1,0 +1,13 @@
+{% extends 'bien/maintenance.html.twig' %}
+
+{% block title %}Modifier Option{% endblock %}
+
+{% block body %}
+<main id='main'>
+    <h1>Modifier une option</h1>
+
+    {{ include('option/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('maintenance', {'maintenance':'options'}) }}">Retoure à la liste</a>
+</main>
+{% endblock %}

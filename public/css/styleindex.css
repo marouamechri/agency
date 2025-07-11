@@ -1,0 +1,22 @@
+#aside {
+    height: auto;
+}
+
+.main {
+    /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    width: 75%;
+    overflow: hidden;
+}
+
+.container-cart {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+
+/* .cadre-body {
+    background-color: rgb(208, 201, 201);
+} */

@@ -31,11 +31,11 @@
    ```bash
    git clone https://github.com/marouamechri/agency.git
    cd agency
-```
+   ```
 2. **Installer les dépendances Symfony** :
    ```bash
    composer install
-```
+   ```
 3. **Configurer l'environnement** :
    - Copier le fichier .env et l'adapter 
       ```bash
@@ -44,13 +44,13 @@
    - Modifier les variables dans .env.local :
      ```bash
       DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/agency?serverVersion=8.0"
-   ```
-5. **Créer la base de données** :
+     ```
+4. **Créer la base de données** :
     ```bash
    php bin/console doctrine:database:create
    php bin/console doctrine:migrations:migrate
-```
-7. **Lancer le serveur Symfony**:
+   ```
+5. **Lancer le serveur Symfony**:
     ```bash
    symfony server:start
    ```
